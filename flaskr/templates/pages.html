@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Pages List</title>
+</head>
+<body>
+    
+    <a href="/">Home</a>
+    <a href="/about">About</a>
+    <a href="/pages">Pages</a>
+    
+
+    <h3>Pages contained in this Wiki</h3>
+
+    <ul>
+        {% for page_name in name_list %}
+            <li>{{ page_name }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

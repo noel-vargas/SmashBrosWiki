@@ -1,6 +1,6 @@
 from flask import Flask, render_template
 from google.cloud import storage
-from flaskr.backend import Backend
+from .backend import Backend
 
 
 backend = Backend()
@@ -15,19 +15,19 @@ def make_endpoints(app):
         # to render main.html on the home page.
         return render_template("main.html")
 
-    # CHECK HOW TO GET THE NAME IN HERE
-    @app.route("nbs-wiki-content/smash-characters", methods=["GET"])
-    def get_wiki_page(name):
-        page = backend.get_wiki_page(name)
+    # when the "About" button is clicked, we change templates
+    @app.route("/about")
+    def about():
+        return render_template("about.html")
 
-    @app.route("nbs-wiki-content/smash-characters", methods=["GET"])
-    def get_all_page_names():
-        page_names = backend.get_all_page_names()
-    
 
-    @app.route("nbs-wiki-content/smash-characters", methods=["GET"])
-    def upload(file_path, file_name):
-        backend.upload(file_path,file_name)
+     # when the "pages" button is clicked, we change templates
+    @app.route("/pages")
+    def pages():
+        name_list = backend.get_all_page_names()
+        return render_template("pages.html", name_list = name_list)
+
+
 
     
     # TODO(Project 1): Implement additional routes according to the project requirements.
