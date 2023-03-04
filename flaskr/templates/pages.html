@@ -14,7 +14,9 @@
 
     <ul>
         {% for page_name in name_list %}
-            <li>{{ page_name }}</li>
+            {% if page_name %}
+                <li><a href="/{{ page_name }}">{{ page_name }}</a></li>
+            {% endif %}
         {% endfor %}
     </ul>
 </body>

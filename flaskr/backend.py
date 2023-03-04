@@ -13,21 +13,24 @@ class Backend:
         self.users_bucket = storage.Client().get_bucket(self.users_bucket_name)
         
     def get_wiki_page(self, name):
-        # Get the blob with the given name O(log(n))
-        blob = self.content_bucket.blob(name)
+        # Get the blob with the given name
+        blob = self.content_bucket.blob("smash-characters/" + name + ".html")
 
         # Check if the blob exists
         if not blob.exists():
             return None
 
+        # Download the blob content as text
         blob_content = blob.download_as_string().decode("utf-8")
+
         return blob_content
+
 
     def get_all_page_names(self):
         prefix = 'smash-characters/'
         delimiter = '/'
         blob_list = self.content_bucket.list_blobs(prefix=prefix, delimiter=delimiter)
-        page_names = [blob.name.split('/')[-1] for blob in blob_list]
+        page_names = [blob.name.split('/')[-1].split('.')[0] for blob in blob_list]
         return page_names
 
 
@@ -47,4 +50,4 @@ class Backend:
         pass
 
     def get_image(self):
-        pass
+        pass 

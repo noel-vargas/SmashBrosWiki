@@ -21,11 +21,22 @@ def make_endpoints(app):
         return render_template("about.html")
 
 
-     # when the "pages" button is clicked, we change templates
+    # when the "pages" button is clicked, we change templates
     @app.route("/pages")
     def pages():
         name_list = backend.get_all_page_names()
         return render_template("pages.html", name_list = name_list)
+
+
+    @app.route('/<page_name>')
+    def show_character_info(page_name):
+        page_content = backend.get_wiki_page(page_name)
+        # if not page_content:
+        #     # It's not finding them. 
+        #     print("not found: {}".format(page_name))
+        #     return 'Page not found', 404
+        return render_template('page.html', page_name=page_name, page_content=page_content)
+
 
 
 
