@@ -1,5 +1,3 @@
-
-<!-- There was another code here -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,11 +10,20 @@
     <a href="/pages">Pages</a>
         
     <h3>About this Wiki</h3>
-    <!-- TODO(Project 1): Add info about the wiki. -->
+    <p>This wiki is a fan-made guide to the characters from the popular video game series 
+        Super Smash Bros. It contains information on each character's powers and a bit of 
+        their background</p>
 
     <h3>Your Authors</h3>
-    <!-- TODO(Project 1): Add team members and pictures to about page. -->
-    <img src="../Authors/noel.png" alt="Noel">
+    <p>Our team consists of:</p>
+    <ul>
+        {% for author in authors_list %}
+            {% if author %}
+            <li><img src="data:image/png;base64,{{ author }}" alt="Author"></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+    
 
 </body>
 </html>

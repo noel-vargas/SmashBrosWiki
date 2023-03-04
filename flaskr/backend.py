@@ -1,5 +1,5 @@
 from google.cloud import storage
-import os
+import os, base64
 
 
 class Backend:
@@ -51,3 +51,21 @@ class Backend:
 
     def get_image(self):
         pass 
+
+
+    #Extra
+    def get_authors(self):
+        blobs = self.content_bucket.list_blobs(prefix='authors/')
+        authors_list = []
+        for blob in blobs:
+            image_data = blob.download_as_bytes()
+            encoded_image_data = base64.b64encode(image_data).decode('utf-8')
+            authors_list.append(encoded_image_data)
+        return authors_list
+
+
+        # blob = self.content_bucket.blob('authors/noel.png')
+        # image_data = blob.download_as_bytes()
+        # encoded_image_data = base64.b64encode(image_data).decode('utf-8')
+
+        # return encoded_image_data 

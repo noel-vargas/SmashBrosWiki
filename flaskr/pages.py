@@ -18,7 +18,9 @@ def make_endpoints(app):
     # when the "About" button is clicked, we change templates
     @app.route("/about")
     def about():
-        return render_template("about.html")
+        #its only giving me 1 author, just for testing purposes
+        authors_list = backend.get_authors()
+        return render_template("about.html", authors_list=authors_list)
 
 
     # when the "pages" button is clicked, we change templates
@@ -31,10 +33,6 @@ def make_endpoints(app):
     @app.route('/pages/<page_name>')
     def show_character_info(page_name):
         page_content = backend.get_wiki_page(page_name)
-        # if not page_content:
-        #     # It's not finding them. 
-        #     print("not found: {}".format(page_name))
-        #     return 'Page not found', 404
         return render_template('page.html', page_name=page_name, page_content=page_content)
 
 
