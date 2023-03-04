@@ -28,7 +28,7 @@ def make_endpoints(app):
         return render_template("pages.html", name_list = name_list)
 
 
-    @app.route('/<page_name>')
+    @app.route('/pages/<page_name>')
     def show_character_info(page_name):
         page_content = backend.get_wiki_page(page_name)
         # if not page_content:
