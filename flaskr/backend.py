@@ -1,5 +1,6 @@
 from google.cloud import storage
 import os, base64
+import hashlib
 
 
 class Backend:
@@ -43,11 +44,36 @@ class Backend:
         blob.upload_from_file(file_path)
         pass
 
-    def sign_up(self):
-        pass
+    def sign_up(self, new_user_name: str, new_password: str):
+        """Adds new to user to GCP Bucket."""
+        # The ID of your new GCS object
+        blob_name = new_user_name
+        blob = self.users_bucket.blob(blob_name)
+        
+        if blob.exists():
+            return False  # User name already exsists. TODO Determine appropiate action.
 
-    def sign_in(self):
-        pass
+        salted_password = f"{new_user_name}nbs{new_password}"
+        hashed_password = hashlib.blake2b(salted_password.encode()).hexdigest()
+
+        with blob.open("w") as f:
+            f.write(hashed_password)
+        return True
+
+    def sign_in(self, username: str, password: str):
+        """Determines if user provided correct information to log in."""
+        blob_name = username
+        blob = self.users_bucket.get_blob(blob_name)
+
+        if not blob:
+            return -1  # User does not exsist. TODO Determine appropiate action.
+
+        hashed_password = ""
+        with blob.open("r") as f:
+            hashed_password = f.read()
+        
+        verify_passwod = hashlib.blake2b(f"{username}nbs{password}".encode()).hexdigest()
+        return verify_passwod == hashed_password
 
     def get_image(self):
         pass 
