@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect
+from flask import Flask, render_template, url_for, redirect, flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import InputRequired
@@ -51,7 +51,10 @@ def make_endpoints(app):
             new_user_name = form.username.data
             new_password = form.password.data
             check = backend.sign_up(new_user_name, new_password)
-            return redirect(url_for("home"))
+            if not check:
+                flash("Username already exists. Please choose another one.")
+            else:
+                return redirect(url_for("home"))
 
         return render_template("register.html", form=form)
 
