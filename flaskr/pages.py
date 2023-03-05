@@ -1,7 +1,14 @@
-from flask import Flask, render_template
-from google.cloud import storage
+from flask import Flask, render_template, url_for, redirect
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired
 from .backend import Backend
 
+
+class SingupForm(FlaskForm):
+    username = StringField(validators=[InputRequired()], render_kw={"placeholder": "Username"})
+    password = PasswordField(validators=[InputRequired()], render_kw={"placeholder": "Password"})
+    submit = SubmitField("Sign Up")
 
 backend = Backend()
 
@@ -10,6 +17,7 @@ def make_endpoints(app):
     # Flask uses the "app.route" decorator to call methods when users
     # go to a specific route on the project's website.
     @app.route("/")
+    @app.route("/home")
     def home():
         # TODO(Checkpoint Requirement 2 of 3): Change this to use render_template
         # to render main.html on the home page.
@@ -35,7 +43,17 @@ def make_endpoints(app):
         page_content = backend.get_wiki_page(page_name)
         return render_template('page.html', page_name=page_name, page_content=page_content)
 
+    
+    @app.route("/signup", methods=["GET", "POST"])
+    def sign_up():
+        form = SingupForm()
+        if form.validate_on_submit():
+            new_user_name = form.username.data
+            new_password = form.password.data
+            check = backend.sign_up(new_user_name, new_password)
+            return redirect(url_for("home"))
 
+        return render_template("register.html", form=form)
 
 
     
