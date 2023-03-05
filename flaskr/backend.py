@@ -51,14 +51,14 @@ class Backend:
         blob = self.users_bucket.blob(blob_name)
         
         if blob.exists():
-            return -1  # User name already exsists. TODO Determine appropiate action.
+            return False  # User name already exsists. TODO Determine appropiate action.
 
         salted_password = f"{new_user_name}nbs{new_password}"
         hashed_password = hashlib.blake2b(salted_password.encode()).hexdigest()
 
         with blob.open("w") as f:
             f.write(hashed_password)
-        return 0
+        return True
 
     def sign_in(self, username: str, password: str):
         """Determines if user provided correct information to log in."""
