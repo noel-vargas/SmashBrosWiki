@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Page Content</title>
+    <title>Character Info</title>
 </head>
 <body>
-    {{ page_content | safe }}
+    <div>
+        <img src="data:image/jpeg;base64,{{ page_image }}" style="height:200px; width:200px;" />
+    </div>
+    <div>
+        {{ page_content | safe }}
+    </div>
 </body>
 </html>
