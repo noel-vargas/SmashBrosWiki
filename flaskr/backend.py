@@ -49,7 +49,7 @@ class Backend:
         pass
 
     def get_image(self,filepath, page_name):
-        blob = self.content_bucket.blob(filepath + page_name + ".jfif")
+        blob = self.content_bucket.blob(filepath + page_name + ".png")
         image_data = blob.download_as_bytes()
         encoded_image_data = base64.b64encode(image_data).decode('utf-8')
         return encoded_image_data
