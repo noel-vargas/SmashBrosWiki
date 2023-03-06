@@ -66,7 +66,7 @@ def make_endpoints(app):
     # when the "pages" button is clicked, we change templates
     @app.route("/pages")
     def pages():
-        name_list = backend.get_all_page_names()
+        name_list = backend.get_all_page_names("/pages")
         return render_template("pages.html", name_list = name_list, active=user.active, name = user.get_id())
 
 
