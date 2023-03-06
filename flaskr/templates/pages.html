@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Character's List</title>
-</head>
-<body>
-    
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/pages">Pages</a>
-    
+{% extends 'base.html' %}
+{% block head %} <title>Pages List</title> {% endblock %}
+
+{% block body %}
 
     <h3>Pages contained in this Wiki</h3>
 
@@ -19,5 +12,4 @@
             {% endif %}
         {% endfor %}
     </ul>
-</body>
-</html>
+{% endblock %}

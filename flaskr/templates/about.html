@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>About This Wiki</title>
-</head>
-<body>
-        
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/pages">Pages</a>
-        
+{% extends 'base.html' %}
+{% block head %} <title>About This Wiki</title> {% endblock %}
+
+{% block body %}
+
     <h3>About this Wiki</h3>
     <p>This wiki is a fan-made guide to the characters from the popular video game series 
         Super Smash Bros. It contains information on each character's powers and a bit of 
@@ -26,5 +20,4 @@
     </ul>
     
 
-</body>
-</html>
+{% endblock %}

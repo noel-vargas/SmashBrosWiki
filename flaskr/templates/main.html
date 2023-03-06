@@ -1,16 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>NewBieS Page</title>
-</head>
-<body>
-    <a href="/">Home</a>
-    <a href="/about">About</a>
-    <a href="/pages">Pages</a>
-    <div>       
-        Welcome to Smash Bros
-    </div>
-   
+{% extends 'base.html' %}
 
-</body>
-</html>
+{% block head %} <title>NewBieS Page</title> {% endblock %}
+
+{% block body %} <div> Welcome to Smash Bros </div>{% endblock %}
