@@ -27,8 +27,7 @@ class Backend:
         return blob_content
 
 
-    def get_all_page_names(self):
-        prefix = 'pages/'
+    def get_all_page_names(self, prefix):
         delimiter = '/'
         blob_list = self.content_bucket.list_blobs(prefix=prefix, delimiter=delimiter)
         page_names = [blob.name.split('/')[-1].split('.')[0] for blob in blob_list]
@@ -75,8 +74,12 @@ class Backend:
         verify_passwod = hashlib.blake2b(f"{username}nbs{password}".encode()).hexdigest()
         return verify_passwod == hashed_password
 
-    def get_image(self):
-        pass 
+    def get_image(self,filepath, page_name):
+        blob = self.content_bucket.blob(filepath + page_name + ".png")
+        image_data = blob.download_as_bytes()
+        encoded_image_data = base64.b64encode(image_data).decode('utf-8')
+        return encoded_image_data
+         
 
 
     #Extra
