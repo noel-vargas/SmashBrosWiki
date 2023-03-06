@@ -19,7 +19,7 @@ class LoginForm(FlaskForm):
 
 
 class User():
-    def __init__(self, username, active=True):
+    def __init__(self, username, active=False):
         self.username = username
         self.active = active
 
@@ -54,27 +54,26 @@ def make_endpoints(app):
     def home():
         # TODO(Checkpoint Requirement 2 of 3): Change this to use render_template
         # to render main.html on the home page.
-        return render_template("main.html")
-
+        return render_template("main.html", active=user.active, name = user.get_id())
     # when the "About" button is clicked, we change templates
     @app.route("/about")
     def about():
         #its only giving me 1 author, just for testing purposes
         authors_list = backend.get_authors()
-        return render_template("about.html", authors_list=authors_list)
+        return render_template("about.html", authors_list=authors_list, active=user.active, name = user.get_id())
 
 
     # when the "pages" button is clicked, we change templates
     @app.route("/pages")
     def pages():
         name_list = backend.get_all_page_names()
-        return render_template("pages.html", name_list = name_list)
+        return render_template("pages.html", name_list = name_list, active=user.active, name = user.get_id())
 
 
     @app.route('/pages/<page_name>')
     def show_character_info(page_name):
         page_content = backend.get_wiki_page(page_name)
-        return render_template('page.html', page_name=page_name, page_content=page_content)
+        return render_template('page.html', page_name=page_name, page_content=page_content, active=user.active, name = user.get_id())
 
     
     @app.route("/signup", methods=["GET", "POST"])
@@ -89,7 +88,7 @@ def make_endpoints(app):
             else:
                 return redirect(url_for("login"))
 
-        return render_template("register.html", form=form)
+        return render_template("register.html", form=form, active=user.active, name = user.get_id())
     
 
     @app.route("/login", methods=["GET", "POST"])
@@ -105,15 +104,17 @@ def make_endpoints(app):
                 flash("Wrong credentials. Try again.")
             else:
                 user.username = username
+                user.active = True
                 login_user(user)
                 return redirect(url_for("home"))
         
-        return render_template("login.html", form=form)
+        return render_template("login.html", form=form, active=user.active, name = user.get_id())
     
     
     @app.route("/logout", methods=["GET", "POST"])
     @login_required
     def logout():
+        user.active = False
         logout_user()
         return redirect(url_for("login"))
 
