@@ -129,10 +129,25 @@ def make_endpoints(app):
             if 'file' not in request.files:
                 flash('No file part')
             file = request.files['file']
+            name = str(request.values['char_name'])
+            info = str(request.values['info'])
+            checker = True
+            
             if file.filename == '':
+                checker = False
                 flash('No selected file')
-            else:
-                backend.upload(file)
+            if name == '':
+                checker = False
+                flash('No Character Name Given')
+
+            if info == '':
+                checker = False
+                flash('No Character Info Given')
+            if not backend.allowed_file(file.filename):
+                checker = False
+                flash('Incorrect File Type')
+            if checker:
+                backend.upload(file, name, info)
                 
         return render_template("upload.html", active=user.active, name = user.get_id())
 

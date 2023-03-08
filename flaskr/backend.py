@@ -1,5 +1,5 @@
 from google.cloud import storage
-import os, base64
+import os, base64, csv
 import hashlib
 
 
@@ -9,7 +9,6 @@ class Backend:
     def __init__(self):
         self.content_bucket_name = 'nbs-wiki-content'
         self.users_bucket_name = 'nbs-usrs-psswrds'
-
         self.content_bucket = storage.Client().get_bucket(self.content_bucket_name)
         self.users_bucket = storage.Client().get_bucket(self.users_bucket_name)
         
@@ -37,13 +36,20 @@ class Backend:
 
 
     # I changed this method's parameters!! added path and name
-    def upload(self, f):
+    def upload(self, f, char_name, char_info):
         # Create the blob with the given name
-        f.save("temp")
-        blob = self.content_bucket.blob("character-images/" + f.filename)
+        f.save("imageTemp")
+        blob = self.content_bucket.blob("character-images/" + char_name + ".png")
         # Upload the file's content to the blob
-        blob.upload_from_filename("temp")
+        blob.upload_from_filename("imageTemp")
         f.close()
+        with open("infoTemp.csv", 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([char_name, char_info])
+            file.close()
+        blob = self.content_bucket.blob("pages/" + char_name + ".csv")
+        blob.upload_from_filename("infoTemp.csv")
+
         pass
 
     def sign_up(self, new_user_name: str, new_password: str):
@@ -82,8 +88,11 @@ class Backend:
         image_data = blob.download_as_bytes()
         encoded_image_data = base64.b64encode(image_data).decode('utf-8')
         return encoded_image_data
-         
-
+    
+    def allowed_file(self,filename):
+        ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+        return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
     #Extra
     def get_authors(self):
