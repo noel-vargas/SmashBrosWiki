@@ -61,9 +61,6 @@ class Backend:
         page_names = [blob.name.split('/')[-1].split('.')[0] for blob in blob_list]
         return page_names
 
-    def upload(self, f) -> None:
-        """Adds data to the content bucket.
-
 
     # I changed this method's parameters!! added path and name
     def upload(self, f, char_name, char_info):
