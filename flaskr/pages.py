@@ -73,8 +73,11 @@ def make_endpoints(app):
     @app.route('/pages/<page_name>')
     def show_character_info(page_name):
         page_content = backend.get_wiki_page(page_name)
+        character_name, description = page_content.split(',', 1)
         page_image = backend.get_image("character-images/",page_name)
-        return render_template('page.html', page_name=page_name, page_content=page_content, page_image=page_image, active=user.active, name = user.get_id())
+        return render_template('page.html', character_name = character_name, description=description, page_image=page_image, active=user.active, name=user.get_id())
+     
+
 
     
     @app.route("/signup", methods=["GET", "POST"])

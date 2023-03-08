@@ -15,7 +15,7 @@ class Backend:
         
     def get_wiki_page(self, name):
         # Get the blob with the given name
-        blob = self.content_bucket.blob("pages/" + name + ".html")
+        blob = self.content_bucket.blob("pages/" + name + ".csv")
 
         # Check if the blob exists
         if not blob.exists():
@@ -23,6 +23,7 @@ class Backend:
 
         # Download the blob content as text
         blob_content = blob.download_as_string().decode("utf-8")
+        
 
         return blob_content
 
@@ -91,10 +92,3 @@ class Backend:
             encoded_image_data = base64.b64encode(image_data).decode('utf-8')
             authors_list.append(encoded_image_data)
         return authors_list
-
-
-        # blob = self.content_bucket.blob('authors/noel.png')
-        # image_data = blob.download_as_bytes()
-        # encoded_image_data = base64.b64encode(image_data).decode('utf-8')
-
-        # return encoded_image_data 
