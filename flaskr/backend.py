@@ -61,7 +61,6 @@ class Backend:
         page_names = [blob.name.split('/')[-1].split('.')[0] for blob in blob_list]
         return page_names
 
-
     # I changed this method's parameters!! added path and name
     def upload(self, f, char_name, char_info):
         # Create the blob with the given name
