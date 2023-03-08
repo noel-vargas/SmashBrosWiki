@@ -125,12 +125,10 @@ def make_endpoints(app):
         if request.method == "POST":
             if 'file' not in request.files:
                 flash('No file part')
-                return redirect(url_for("home"))
             file = request.files['file']
             if file.filename == '':
                 flash('No selected file')
-                return redirect(url_for("about"))
-            if file:
+            else:
                 backend.upload(file)
                 
         return render_template("upload.html", active=user.active, name = user.get_id())
