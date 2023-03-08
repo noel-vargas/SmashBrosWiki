@@ -3,19 +3,22 @@
 {% block head %} <title>Upload</title> {% endblock %}
 
 {% block body %}
-    <h1>Show File-select Fields</h1>
-  
-    <h3>
+    <h1>
         Upload File to the Wiki:
-    </h3>
+    </h1>
     {% for message in get_flashed_messages() %}
             <div class="alert alert-warning" role="alert">
                 {{ message }}
             </div>
         {% endfor %}
-        
+
     <form method="POST" enctype=multipart/form-data>
+        <label for="name">Character Image('png', 'jpg', 'jpeg', 'gif'):</label><br>
         <input type=file name=file>
+        <label for="name">Character Name:</label><br>
+        <input type=text name=char_name><br>
+        <label for="info">Character Info:</label><br>
+        <input type=text name=info><br>
         <input type=submit value=Upload>
       </form>
 {% endblock %}

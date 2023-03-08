@@ -1,5 +1,5 @@
 from google.cloud import storage
-import base64
+import os, base64, csv
 import hashlib
 
 
@@ -64,14 +64,23 @@ class Backend:
     def upload(self, f) -> None:
         """Adds data to the content bucket.
 
-        Args:
-            f:
-                A is a Werkzeug FileStorage object representing the file to upload.
-        """
-        f.save("temp")  # Create the blob with the given name
-        blob = self.content_bucket.blob("character-images/" + f.filename)
-        blob.upload_from_filename("temp")  # Upload the file's content to the blob
+
+    # I changed this method's parameters!! added path and name
+    def upload(self, f, char_name, char_info):
+        # Create the blob with the given name
+        f.save("imageTemp")
+        blob = self.content_bucket.blob("character-images/" + char_name + ".png")
+        # Upload the file's content to the blob
+        blob.upload_from_filename("imageTemp")
         f.close()
+        with open("infoTemp.csv", 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([char_name, char_info])
+            file.close()
+        blob = self.content_bucket.blob("pages/" + char_name + ".csv")
+        blob.upload_from_filename("infoTemp.csv")
+
+        pass
 
     def sign_up(self, new_user_name: str, new_password: str) -> bool:
         """Adds user data if it does not exist along with a hashed password.
@@ -147,11 +156,15 @@ class Backend:
         image_data = blob.download_as_bytes()
         encoded_image_data = base64.b64encode(image_data).decode("utf-8")
         return encoded_image_data
-         
-    # Extra method
-    def get_authors(self) -> list[str]:
-        """Get all the author's images. Same procedure as get_image()."""
-        blobs = self.content_bucket.list_blobs(prefix="authors/")
+    
+    def allowed_file(self,filename):
+        ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+        return '.' in filename and \
+            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+    #Extra
+    def get_authors(self):
+        blobs = self.content_bucket.list_blobs(prefix='authors/')
         authors_list = []
         for blob in blobs:
             image_data = blob.download_as_bytes()
