@@ -22,23 +22,25 @@ class Backend:
     
     def __init__(self) -> None:
         """Initializes an instance that can interact with the GCS."""
-        self.content_bucket_name = 'nbs-wiki-content'
-        self.users_bucket_name = 'nbs-usrs-psswrds'
+        self.content_bucket_name = "nbs-wiki-content"
+        self.users_bucket_name = "nbs-usrs-psswrds"
         self.content_bucket = storage.Client().get_bucket(self.content_bucket_name)
         self.users_bucket = storage.Client().get_bucket(self.users_bucket_name)
         
-    def get_wiki_page(self, name):
-        # Get the blob with the given name
-        blob = self.content_bucket.blob("pages/" + name + ".csv")
+    def get_wiki_page(self, name:str) -> str:
+        """Gets an uploaded page from the content bucket.
+        
+        Args:
+            name:
+                A string with the page name.
 
-        # Check if the blob exists
+        Returns:
+            A strings with the pages content.
+        """
+        blob = self.content_bucket.blob("pages/" + name + ".csv")
         if not blob.exists():
             return None
-
-        # Download the blob content as text
-        blob_content = blob.download_as_string().decode("utf-8")
-        
-
+        blob_content = blob.download_as_string().decode("utf-8")  # Download the blob content as text
         return blob_content
 
     def get_all_page_names(self, prefix: str) -> list[str]:
@@ -59,15 +61,17 @@ class Backend:
         page_names = [blob.name.split('/')[-1].split('.')[0] for blob in blob_list]
         return page_names
 
-    # I changed this method's parameters!! added path and name
-    def upload(self, f):
-        # Create the blob with the given name
-        f.save("temp")
+    def upload(self, f) -> None:
+        """Adds data to the content bucket.
+
+        Args:
+            f:
+                A is a Werkzeug FileStorage object representing the file to upload.
+        """
+        f.save("temp")  # Create the blob with the given name
         blob = self.content_bucket.blob("character-images/" + f.filename)
-        # Upload the file's content to the blob
-        blob.upload_from_filename("temp")
+        blob.upload_from_filename("temp")  # Upload the file's content to the blob
         f.close()
-        pass
 
     def sign_up(self, new_user_name: str, new_password: str) -> bool:
         """Adds user data if it does not exist along with a hashed password.
@@ -141,16 +145,16 @@ class Backend:
         """
         blob = self.content_bucket.blob(filepath + page_name + ".png")
         image_data = blob.download_as_bytes()
-        encoded_image_data = base64.b64encode(image_data).decode('utf-8')
+        encoded_image_data = base64.b64encode(image_data).decode("utf-8")
         return encoded_image_data
          
     # Extra method
     def get_authors(self) -> list[str]:
         """Get all the author's images. Same procedure as get_image()."""
-        blobs = self.content_bucket.list_blobs(prefix='authors/')
+        blobs = self.content_bucket.list_blobs(prefix="authors/")
         authors_list = []
         for blob in blobs:
             image_data = blob.download_as_bytes()
-            encoded_image_data = base64.b64encode(image_data).decode('utf-8')
+            encoded_image_data = base64.b64encode(image_data).decode("utf-8")
             authors_list.append(encoded_image_data)
         return authors_list
