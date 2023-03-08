@@ -36,11 +36,13 @@ class Backend:
 
 
     # I changed this method's parameters!! added path and name
-    def upload(self, file_path, file_name):
+    def upload(self, f):
         # Create the blob with the given name
-        blob = self.content_bucket.blob(file_name)
+        f.save("temp")
+        blob = self.content_bucket.blob("character-images/" + f.filename)
         # Upload the file's content to the blob
-        blob.upload_from_file(file_path)
+        blob.upload_from_filename("temp")
+        f.close()
         pass
 
     def sign_up(self, new_user_name: str, new_password: str):

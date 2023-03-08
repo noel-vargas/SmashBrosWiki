@@ -1,7 +1,7 @@
-from flask import Flask, render_template, url_for, redirect, flash
+from flask import Flask, render_template, url_for, redirect, flash, request
 from flask_login import LoginManager, login_required, login_user, current_user, logout_user
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, FileField, TextAreaField
 from wtforms.validators import InputRequired
 from .backend import Backend
 
@@ -16,7 +16,7 @@ class LoginForm(FlaskForm):
     username = StringField(validators=[InputRequired()], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[InputRequired()], render_kw={"placeholder": "Password"})
     submit = SubmitField("Log In")
-
+  
 
 class User():
     def __init__(self, username, active=False):
@@ -119,5 +119,18 @@ def make_endpoints(app):
         logout_user()
         return redirect(url_for("login"))
 
-    
+    @app.route("/upload", methods=["GET", "POST"])
+    @login_required
+    def upload_file():
+        if request.method == "POST":
+            if 'file' not in request.files:
+                flash('No file part')
+            file = request.files['file']
+            if file.filename == '':
+                flash('No selected file')
+            else:
+                backend.upload(file)
+                
+        return render_template("upload.html", active=user.active, name = user.get_id())
+
     # TODO(Project 1): Implement additional routes according to the project requirements.

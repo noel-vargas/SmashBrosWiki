@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %} <title>Upload</title> {% endblock %}
+
+{% block body %}
+    <h1>Show File-select Fields</h1>
+  
+    <h3>
+        Upload File to the Wiki:
+    </h3>
+    {% for message in get_flashed_messages() %}
+            <div class="alert alert-warning" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+        
+    <form method="POST" enctype=multipart/form-data>
+        <input type=file name=file>
+        <input type=submit value=Upload>
+      </form>
+{% endblock %}
