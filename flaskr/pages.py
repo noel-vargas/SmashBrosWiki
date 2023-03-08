@@ -6,7 +6,7 @@ from wtforms.validators import InputRequired
 from .backend import Backend
 
 
-class SingupForm(FlaskForm):
+class SignupForm(FlaskForm):
     username = StringField(validators=[InputRequired()], render_kw={"placeholder": "Username"})
     password = PasswordField(validators=[InputRequired()], render_kw={"placeholder": "Password"})
     submit = SubmitField("Sign Up")
@@ -82,7 +82,7 @@ def make_endpoints(app):
     
     @app.route("/signup", methods=["GET", "POST"])
     def sign_up():
-        form = SingupForm()
+        form = SignupForm()
         if form.validate_on_submit():
             new_user_name = form.username.data
             new_password = form.password.data
