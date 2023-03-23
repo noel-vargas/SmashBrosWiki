@@ -8,27 +8,32 @@ from .backend import Backend
 
 class SignupForm(FlaskForm):
     """Generates form and stores form data for signing up process."""
-    username = StringField(validators=[InputRequired()], render_kw={"placeholder": "Username"})
-    password = PasswordField(validators=[InputRequired()], render_kw={"placeholder": "Password"})
+    username = StringField(validators=[InputRequired()],
+                           render_kw={"placeholder": "Username"})
+    password = PasswordField(validators=[InputRequired()],
+                             render_kw={"placeholder": "Password"})
     submit = SubmitField("Sign Up")
 
 
 class LoginForm(FlaskForm):
     """Generates form and stores form data for log in process."""
-    username = StringField(validators=[InputRequired()], render_kw={"placeholder": "Username"})
-    password = PasswordField(validators=[InputRequired()], render_kw={"placeholder": "Password"})
+    username = StringField(validators=[InputRequired()],
+                           render_kw={"placeholder": "Username"})
+    password = PasswordField(validators=[InputRequired()],
+                             render_kw={"placeholder": "Password"})
     submit = SubmitField("Log In")
-  
+
 
 class User():
     """Current user in session."""
+
     def __init__(self, username, active=False):
         self.username = username
         self.active = active
 
     def is_active(self):
-        return self.active 
-    
+        return self.active
+
     def is_authenticated(self):
         return True
 
@@ -51,28 +56,32 @@ def make_endpoints(app):
     def load_user(username):
         return user
 
-
     @app.route('/')
     @app.route("/home")
     def home():
         """Renders the home/landing page when the page is accessed."""
-        return render_template("main.html", active=user.active, name=user.get_id())
-
+        return render_template("main.html",
+                               active=user.active,
+                               name=user.get_id())
 
     @app.route("/about")
     def about():
         """Renders authors' images and information."""
         authors_list = backend.get_authors()
-        return render_template("about.html", authors_list=authors_list, active=user.active, name=user.get_id())
-
+        return render_template("about.html",
+                               authors_list=authors_list,
+                               active=user.active,
+                               name=user.get_id())
 
     # when the "pages" button is clicked, we change templates
     @app.route("/pages")
     def pages():
         """Renders the page index for wiki pages."""
         name_list = backend.get_all_page_names("pages/")
-        return render_template("pages.html", name_list=name_list, active=user.active, name=user.get_id())
-
+        return render_template("pages.html",
+                               name_list=name_list,
+                               active=user.active,
+                               name=user.get_id())
 
     @app.route("/pages/<page_name>")
     def show_character_info(page_name):
@@ -80,9 +89,13 @@ def make_endpoints(app):
         page_content = backend.get_wiki_page(page_name)
         character_name, description = page_content.split(',', 1)
         page_image = backend.get_image("character-images/", page_name)
-        return render_template("page.html", character_name=character_name, description=description, page_image=page_image, active=user.active, name=user.get_id())
+        return render_template("page.html",
+                               character_name=character_name,
+                               description=description,
+                               page_image=page_image,
+                               active=user.active,
+                               name=user.get_id())
 
-    
     @app.route("/signup", methods=["GET", "POST"])
     def sign_up():
         """Handles the sign up process for new users."""
@@ -95,8 +108,10 @@ def make_endpoints(app):
                 flash("Username already exists. Please choose another one.")
             else:
                 return redirect(url_for("login"))
-        return render_template("register.html", form=form, active=user.active, name=user.get_id())
-    
+        return render_template("register.html",
+                               form=form,
+                               active=user.active,
+                               name=user.get_id())
 
     @app.route("/login", methods=["GET", "POST"])
     def login():
@@ -115,16 +130,17 @@ def make_endpoints(app):
                 user.active = True
                 login_user(user)
                 return redirect(url_for("home"))
-        return render_template("login.html", form=form, active=user.active, name=user.get_id())
-    
-    
+        return render_template("login.html",
+                               form=form,
+                               active=user.active,
+                               name=user.get_id())
+
     @app.route("/logout", methods=["GET", "POST"])
     @login_required
     def logout():
         user.active = False
         logout_user()
         return redirect(url_for("login"))
-
 
     @app.route("/upload", methods=["GET", "POST"])
     @login_required
@@ -150,4 +166,6 @@ def make_endpoints(app):
                 flash('Incorrect File Type')
             if checker:
                 backend.upload(file, name, info)
-        return render_template("upload.html", active=user.active, name=user.get_id())
+        return render_template("upload.html",
+                               active=user.active,
+                               name=user.get_id())

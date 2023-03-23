@@ -2,7 +2,8 @@ from flaskr import create_app
 
 import pytest
 
-# See https://flask.palletsprojects.com/en/2.2.x/testing/ 
+
+# See https://flask.palletsprojects.com/en/2.2.x/testing/
 # for more info on testing
 @pytest.fixture
 def app():
@@ -11,9 +12,11 @@ def app():
     })
     return app
 
+
 @pytest.fixture
 def client(app):
     return app.test_client()
+
 
 # TODO(Checkpoint (groups of 4 only) Requirement 4): Change test to
 # match the changes made in the other Checkpoint Requirements.
@@ -28,15 +31,18 @@ def test_home_page(client):
 
 # TODO(Project 1): Write tests for other routes.
 
+
 def test_about_page(client):
     resp = client.get("/about")
     assert resp.status_code == 200
     assert b"About" in resp.data
 
+
 def test_pages_page(client):
     resp = client.get("/pages")
     assert resp.status_code == 200
     assert b"Pages" in resp.data
+
 
 # Test Kirby page
 def test_kirby_page(client):
@@ -69,4 +75,3 @@ def test_upload_page(client):
     resp = client.get("/upload")
     assert resp.status_code == 302
     assert b"Redirecting" in resp.data
-

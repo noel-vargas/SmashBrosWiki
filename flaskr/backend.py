@@ -19,15 +19,16 @@ class Backend:
         users_bucket:
             A Google Cloud Storage bucket that stores the users and their passwords.
     """
-    
+
     def __init__(self) -> None:
         """Initializes an instance that can interact with the GCS."""
         self.content_bucket_name = "nbs-wiki-content"
         self.users_bucket_name = "nbs-usrs-psswrds"
-        self.content_bucket = storage.Client().get_bucket(self.content_bucket_name)
+        self.content_bucket = storage.Client().get_bucket(
+            self.content_bucket_name)
         self.users_bucket = storage.Client().get_bucket(self.users_bucket_name)
-        
-    def get_wiki_page(self, name:str) -> str:
+
+    def get_wiki_page(self, name: str) -> str:
         """Gets an uploaded page from the content bucket.
         
         Args:
@@ -40,7 +41,8 @@ class Backend:
         blob = self.content_bucket.blob("pages/" + name + ".csv")
         if not blob.exists():
             return None
-        blob_content = blob.download_as_string().decode("utf-8")  # Download the blob content as text
+        blob_content = blob.download_as_string().decode(
+            "utf-8")  # Download the blob content as text
         return blob_content
 
     def get_all_page_names(self, prefix: str) -> list[str]:
@@ -57,15 +59,19 @@ class Backend:
             A list of strings containing all the pages' names.
         """
         delimiter = '/'
-        blob_list = self.content_bucket.list_blobs(prefix=prefix, delimiter=delimiter)
-        page_names = [blob.name.split('/')[-1].split('.')[0] for blob in blob_list]
+        blob_list = self.content_bucket.list_blobs(prefix=prefix,
+                                                   delimiter=delimiter)
+        page_names = [
+            blob.name.split('/')[-1].split('.')[0] for blob in blob_list
+        ]
         return page_names
 
     # I changed this method's parameters!! added path and name
     def upload(self, f, char_name, char_info):
         # Create the blob with the given name
         f.save("imageTemp")
-        blob = self.content_bucket.blob("character-images/" + char_name + ".png")
+        blob = self.content_bucket.blob("character-images/" + char_name +
+                                        ".png")
         # Upload the file's content to the blob
         blob.upload_from_filename("imageTemp")
         f.close()
@@ -128,8 +134,10 @@ class Backend:
             return -1  # User does not exsist.
         hashed_password = ""
         with blob.open("r") as f:
-            hashed_password = f.read()  # Get user's hashed password from bucket.
-        verify_passwod = hashlib.blake2b(f"{username}nbs{password}".encode()).hexdigest()
+            hashed_password = f.read(
+            )  # Get user's hashed password from bucket.
+        verify_passwod = hashlib.blake2b(
+            f"{username}nbs{password}".encode()).hexdigest()
         return verify_passwod == hashed_password  # Check if passwords match.
 
     def get_image(self, filepath: str, page_name: str) -> str:
@@ -152,8 +160,8 @@ class Backend:
         image_data = blob.download_as_bytes()
         encoded_image_data = base64.b64encode(image_data).decode("utf-8")
         return encoded_image_data
-    
-    def allowed_file(self,filename):
+
+    def allowed_file(self, filename):
         ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
         return '.' in filename and \
             filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
