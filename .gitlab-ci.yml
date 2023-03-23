@@ -6,3 +6,14 @@ lint:
  - yapf --recursive . --diff --style google
  only:
  - pushes
+
+ unittest:
+ stage: test
+ needs:
+ - pipeline: build
+   job: lint
+ script:
+ - pip install -r requirements.txt
+ - pytest -v
+ only:
+ - pushes
