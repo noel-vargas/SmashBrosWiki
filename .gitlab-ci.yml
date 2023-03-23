@@ -7,10 +7,10 @@ lint:
  only:
  - pushes
 
- unittest:
+unittest:
  stage: test
- dependencies:
- -lint
+ dependencies: 
+ - lint
  script:
  - pip install -r requirements.txt
  - pytest .
