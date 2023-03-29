@@ -3,7 +3,6 @@ from flask_login import LoginManager, login_required, login_user, current_user, 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FileField, TextAreaField
 from wtforms.validators import InputRequired
-from .backend import Backend
 
 
 class SignupForm(FlaskForm):

@@ -1,5 +1,5 @@
 from flaskr import pages
-from backend import Backend
+from .backend import Backend
 from flask import Flask
 
 import logging
