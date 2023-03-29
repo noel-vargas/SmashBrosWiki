@@ -41,11 +41,10 @@ class User():
         return self.username
 
 
-backend = Backend()
 user = User(None)  # /login will update this with current user in session.
 
 
-def make_endpoints(app):
+def make_endpoints(app, backend):
 
     # Initiates login_manager for session handling.
     login_manager = LoginManager()
