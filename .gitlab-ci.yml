@@ -20,6 +20,8 @@ unittest:
 prod:
   image: google/cloud-sdk:alpine
   stage: deploy
+  dependencies: 
+  - unittest
   environment: Production
   only:
   - main
