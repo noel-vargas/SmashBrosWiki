@@ -75,7 +75,7 @@ def make_endpoints(app, backend):
     @app.route("/pages")
     def pages():
         """Renders the page index for wiki pages."""
-        name_list = backend.get_all_page_names("pages/")
+        name_list = backend.get_all_page_names()
         return render_template("pages.html",
                                name_list=name_list,
                                active=user.active,
@@ -85,14 +85,16 @@ def make_endpoints(app, backend):
     def show_character_info(page_name):
         """Renders specific (clicked) wiki page based on page_name."""
         page_content = backend.get_wiki_page(page_name)
-        character_name, description = page_content.split(',', 1)
-        page_image = backend.get_image("character-images/", page_name)
+        character_name, description, world = page_content.split('|', 2)  
+        # page_image = backend.get_image("character-images/", page_name)
         return render_template("page.html",
-                               character_name=character_name,
-                               description=description,
-                               page_image=page_image,
-                               active=user.active,
-                               name=user.get_id())
+                            character_name=character_name,
+                            description=description,
+                            world=world,  # Add world to the template
+                            # page_image=page_image,
+                            active=user.active,
+                            name=user.get_id())
+
 
     @app.route("/signup", methods=["GET", "POST"])
     def sign_up():
