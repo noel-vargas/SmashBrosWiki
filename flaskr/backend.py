@@ -24,21 +24,28 @@ class Backend:
             the Google Cloud Datastore service for the project 'sds-project-nbs-wiki'.
     """
 
-    def __init__(
-        self,
-        client=datastore.Client('sds-project-nbs-wiki'),
-        content_bucket=storage.Client().get_bucket("nbs-wiki-content"),
-        users_bucket=storage.Client().get_bucket("nbs-usrs-psswrds")
-    ) -> None:
+    def __init__(self,
+                 client=None,
+                 content_bucket=None,
+                 users_bucket=None,
+                 key_method=None) -> None:
+
+        if client is None:
+            client = datastore.Client('sds-project-nbs-wiki')
+
+        if content_bucket is None:
+            content_bucket = storage.Client().get_bucket("nbs-wiki-content")
+
+        if users_bucket is None:
+            users_bucket = storage.Client().get_bucket("nbs-usrs-psswrds")
+
+        if key_method is None:
+            key_method = client.key
 
         self.client = client
         self.content_bucket = content_bucket
         self.users_bucket = users_bucket
-        # self.content_bucket_name = "nbs-wiki-content"
-        # self.users_bucket_name = "nbs-usrs-psswrds"
-        # self.content_bucket = storage.Client().get_bucket(
-        #     self.content_bucket_name)
-        # self.users_bucket = storage.Client().get_bucket(self.users_bucket_name)
+        self.key = key_method
 
     def get_wiki_page(self, name: str) -> str:
         """Get a wiki page from the Datastore by name.
@@ -50,7 +57,7 @@ class Backend:
             A string representing the character's information in the format "character_name|info|world",
             or None if the character is not found.
         """
-        key = self.client.key('Character', name)
+        key = self.key('Character', name)
         wiki_page = self.client.get(key)
         if wiki_page:
             character_name = wiki_page['Name']
@@ -138,11 +145,6 @@ class Backend:
         verify_password = hashlib.blake2b(
             f"{username}nbs{password}".encode()).hexdigest()
         return verify_password == hashed_password
-
-    # def hash_password(self, username: str, password: str) -> str:
-    #     salted_password = f"{username}nbs{password}"
-    #     hashed_password = hashlib.blake2b(salted_password.encode()).hexdigest()
-    #     return hashed_password
 
     def get_image(self, filepath: str, page_name: str) -> str:
         """Get the encoded image data of a character image from the GCS bucket.
