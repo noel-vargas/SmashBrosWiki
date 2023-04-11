@@ -1,4 +1,4 @@
-from google.cloud import datastore
+from google.cloud import datastore, storage
 import os, base64, csv
 import hashlib
 
@@ -19,9 +19,15 @@ class Backend:
         users_bucket:
             A Google Cloud Storage bucket that stores the users and their passwords.
     """
-
+    
     def __init__(self) -> None:
         self.client = datastore.Client('sds-project-nbs-wiki')
+        self.content_bucket_name = "nbs-wiki-content"
+        self.users_bucket_name = "nbs-usrs-psswrds"
+        self.content_bucket = storage.Client().get_bucket(self.content_bucket_name)
+        self.users_bucket = storage.Client().get_bucket(self.users_bucket_name)
+
+        
 
     def get_wiki_page(self, name: str) -> str:
         key = self.client.key('Character', name)
@@ -42,16 +48,17 @@ class Backend:
 
 
     # I changed this method's parameters!! added path and name
-    def upload(self, f, char_name, char_info):
-        f.save("imageTemp")
-        with open("imageTemp", "rb") as image_file:
-            encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
 
+    def upload(self, f, char_name, char_info):
+        # Save the image to the GCS bucket
+        image_blob = self.content_bucket.blob(f"character-images/{char_name}")
+        image_blob.upload_from_file(f, content_type=f.content_type)
+
+        # Save the character info to the Datastore
         wiki_page_key = self.client.key('Character', char_name)
         wiki_page = datastore.Entity(key=wiki_page_key)
         wiki_page.update({
-        'content': char_info,
-        'image': encoded_image
+            'content': char_info,
         })
         self.client.put(wiki_page)
 
@@ -84,12 +91,15 @@ class Backend:
         return verify_password == hashed_password
 
 
-    # def get_image(self, page_name: str) -> str:
-    #     key = self.client.key('Character', page_name)
-    #     wiki_page = self.client.get(key)
-    #     if wiki_page:
-    #         return wiki_page['image']
-    #     return None
+    def get_image(self, page_name: str) -> str:
+        image_blob = self.content_bucket.blob(f"character-images/{page_name}")
+        print(f"Checking for image: character-images/{page_name}")  # Add this line for debugging
+        if image_blob.exists():
+            image_data = image_blob.download_as_string()
+            return base64.b64encode(image_data).decode("utf-8")
+        print(f"Image not found: character-images/{page_name}")  # Add this line for debugging
+        return None
+
 
 
     def allowed_file(self, filename):
@@ -97,12 +107,12 @@ class Backend:
         return '.' in filename and \
             filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-    # #Extra
-    # def get_authors(self):
-    #     blobs = self.content_bucket.list_blobs(prefix='authors/')
-    #     authors_list = []
-    #     for blob in blobs:
-    #         image_data = blob.download_as_bytes()
-    #         encoded_image_data = base64.b64encode(image_data).decode("utf-8")
-    #         authors_list.append(encoded_image_data)
-    #     return authors_list
+    #Extra
+    def get_authors(self):
+        blobs = self.content_bucket.list_blobs(prefix='authors/')
+        authors_list = []
+        for blob in blobs:
+            image_data = blob.download_as_bytes()
+            encoded_image_data = base64.b64encode(image_data).decode("utf-8")
+            authors_list.append(encoded_image_data)
+        return authors_list
