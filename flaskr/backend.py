@@ -49,18 +49,22 @@ class Backend:
 
     # I changed this method's parameters!! added path and name
 
-    def upload(self, f, char_name, char_info):
+    def upload(self, f, char_name, char_info, char_world):
         # Save the image to the GCS bucket
-        image_blob = self.content_bucket.blob(f"character-images/{char_name}")
+        image_blob = self.content_bucket.blob("character-images/" + char_name + ".png")
         image_blob.upload_from_file(f, content_type=f.content_type)
 
         # Save the character info to the Datastore
         wiki_page_key = self.client.key('Character', char_name)
         wiki_page = datastore.Entity(key=wiki_page_key)
         wiki_page.update({
-            'content': char_info,
+            'Name': char_name,
+            'Info': char_info,
+            'World': char_world,
         })
         self.client.put(wiki_page)
+
+
 
 
     def sign_up(self, new_user_name: str, new_password: str) -> bool:
@@ -91,14 +95,11 @@ class Backend:
         return verify_password == hashed_password
 
 
-    def get_image(self, page_name: str) -> str:
-        image_blob = self.content_bucket.blob(f"character-images/{page_name}")
-        print(f"Checking for image: character-images/{page_name}")  # Add this line for debugging
-        if image_blob.exists():
-            image_data = image_blob.download_as_string()
-            return base64.b64encode(image_data).decode("utf-8")
-        print(f"Image not found: character-images/{page_name}")  # Add this line for debugging
-        return None
+    def get_image(self, filepath: str, page_name: str) -> str:
+        blob = self.content_bucket.blob(filepath + page_name + ".png")
+        image_data = blob.download_as_bytes()
+        encoded_image_data = base64.b64encode(image_data).decode("utf-8")
+        return encoded_image_data
 
 
 
