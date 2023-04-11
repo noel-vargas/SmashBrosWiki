@@ -2,9 +2,11 @@ Flask==2.1.0
 Flask-Login==0.6.2
 Flask-WTF==1.1.1
 google-cloud-storage==2.7.0
+google-cloud-datastore==2.15.1
 pytest==6.2.5
 pytest-cov==2.11.1
 Jinja2==3.1.2
 MarkupSafe==2.1.2
 itsdangerous==2.1.2
 Werkzeug==2.2.2
+yapf==0.32.0

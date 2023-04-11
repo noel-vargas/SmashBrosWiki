@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash
 from unittest.mock import MagicMock
 from .backend import Backend
 
+
 # Mocking Google Cloud Storage and Datastore client
 @pytest.fixture
 def mock_backend():
@@ -11,6 +12,7 @@ def mock_backend():
     backend.content_bucket = MagicMock()
     backend.users_bucket = MagicMock()
     return backend
+
 
 def test_get_wiki_page(mock_backend):
     mock_backend.client.get.return_value = {
@@ -22,25 +24,31 @@ def test_get_wiki_page(mock_backend):
     result = mock_backend.get_wiki_page('Mario')
     assert result == 'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.'
 
+
 def test_get_all_page_names(mock_backend):
     entity1 = MagicMock()
     entity1.key.name = "Mario"
     entity2 = MagicMock()
     entity2.key.name = "Link"
-    
-    mock_backend.client.query.return_value.fetch.return_value = [entity1, entity2]
+
+    mock_backend.client.query.return_value.fetch.return_value = [
+        entity1, entity2
+    ]
 
     result = mock_backend.get_all_page_names()
     assert result == ["Mario", "Link"]
 
 
 def test_upload(mock_backend):
-    mock_backend.content_bucket.blob.return_value = MagicMock(upload_from_file=MagicMock())
+    mock_backend.content_bucket.blob.return_value = MagicMock(
+        upload_from_file=MagicMock())
 
     f = MagicMock(content_type='image/png', tell=MagicMock(return_value=0))
-    mock_backend.upload(f, 'Mario', 'A character from the Mario series.', 'Mushroom Kingdom')
+    mock_backend.upload(f, 'Mario', 'A character from the Mario series.',
+                        'Mushroom Kingdom')
 
-    mock_backend.content_bucket.blob.assert_called_with('character-images/Mario.png')
+    mock_backend.content_bucket.blob.assert_called_with(
+        'character-images/Mario.png')
     mock_backend.client.put.assert_called()
 
 
@@ -51,15 +59,12 @@ def test_sign_up(mock_backend):
     assert result is True
 
 
-
-
-
 def test_sign_in(mock_backend):
     correct_password = 'existing_password'
     salted_password = f"existing_usernbs{correct_password}"
     correct_hash = hashlib.blake2b(salted_password.encode()).hexdigest()
     mock_backend.client.get.return_value = {'hashed_password': correct_hash}
-    
+
     result = mock_backend.sign_in('existing_user', correct_password)
     assert result is True
 
@@ -67,11 +72,12 @@ def test_sign_in(mock_backend):
     result = mock_backend.sign_in('nonexistent_user', 'password')
     assert result == -1
 
+
 def test_get_image(mock_backend):
     # Prepare the test image data
     image_data = b'test_image_data'
     encoded_image_data = base64.b64encode(image_data).decode("utf-8")
-    
+
     # Set up the mock for the blob
     mock_blob = MagicMock(download_as_bytes=MagicMock(return_value=image_data))
     mock_backend.content_bucket.blob.return_value = mock_blob
@@ -85,7 +91,8 @@ def test_get_image(mock_backend):
     assert result == encoded_image_data
 
     # Assert the content_bucket.blob and download_as_bytes were called with appropriate arguments
-    mock_backend.content_bucket.blob.assert_called_with(filepath + page_name + ".png")
+    mock_backend.content_bucket.blob.assert_called_with(filepath + page_name +
+                                                        ".png")
     mock_blob.download_as_bytes.assert_called()
 
 
@@ -104,13 +111,11 @@ def test_get_image(mock_backend):
 # def backend():
 #     return Backend()
 
-
 # def test_get_wiki_page(backend):
 #     with patch('google.cloud.datastore.Client.get') as mock_get:
 #         mock_get.return_value = sample_character
 #         result = backend.get_wiki_page('Mario')
 #         assert result == 'Mario|A character from the Mario series.|Mushroom Kingdom'
-
 
 # def test_get_all_page_names(backend):
 #     with patch('google.cloud.datastore.Client.query') as mock_query:
@@ -123,8 +128,6 @@ def test_get_image(mock_backend):
 #         mock_query.return_value = MagicMock(fetch=mock_fetch)
 #         result = backend.get_all_page_names()
 #         assert result == ['Mario', 'Luigi']
-
-
 
 # def test_upload(backend):
 #     with patch('google.cloud.storage.Client.get_bucket') as mock_get_bucket:
@@ -139,7 +142,6 @@ def test_get_image(mock_backend):
 #             mock_content_bucket.blob.return_value.upload_from_file.assert_called_with(f)
 #             mock_put.assert_called()
 
-
 # def test_sign_up(backend):
 #     with patch('google.cloud.datastore.Client.get') as mock_get:
 #         with patch('google.cloud.datastore.Client.put') as mock_put:
@@ -147,7 +149,6 @@ def test_get_image(mock_backend):
 #             result = backend.sign_up('new_user', 'new_password')
 #             assert result == True
 #             mock_put.assert_called()
-
 
 # def test_sign_in(backend):
 #     with patch('google.cloud.datastore.Client.get') as mock_get:

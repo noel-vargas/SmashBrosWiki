@@ -85,7 +85,7 @@ def make_endpoints(app, backend):
     def show_character_info(page_name):
         """Renders specific (clicked) wiki page based on page_name."""
         page_content = backend.get_wiki_page(page_name)
-        character_name, description, world,  = page_content.split('|', 3)
+        character_name, description, world, = page_content.split('|', 3)
         page_image = backend.get_image("character-images/", page_name)
         return render_template("page.html",
                                character_name=character_name,
@@ -134,7 +134,6 @@ def make_endpoints(app, backend):
                                active=user.active,
                                name=user.get_id())
 
-
     @app.route("/logout", methods=["GET", "POST"])
     @login_required
     def logout():
@@ -142,7 +141,6 @@ def make_endpoints(app, backend):
         user.active = False
         logout_user()
         return redirect(url_for("login"))
-
 
     @app.route("/upload", methods=["GET", "POST"])
     @login_required
@@ -173,6 +171,5 @@ def make_endpoints(app, backend):
             if checker:
                 backend.upload(file, name, info, world)
         return render_template("upload.html",
-                            active=user.active,
-                            name=user.get_id())
-
+                               active=user.active,
+                               name=user.get_id())

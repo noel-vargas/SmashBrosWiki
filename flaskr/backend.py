@@ -3,6 +3,7 @@ import os, base64, csv
 import hashlib
 """ Provides a backend implementation for the Super Smash Bros. wiki project using Google Cloud Storage (GCS) and Google Cloud Datastore """
 
+
 class Backend:
     """Provides an interface for underlying GCS buckets.
     
@@ -22,15 +23,14 @@ class Backend:
             An instance of `datastore.Client` that represents the connection to
             the Google Cloud Datastore service for the project 'sds-project-nbs-wiki'.
     """
-    
+
     def __init__(self) -> None:
         self.client = datastore.Client('sds-project-nbs-wiki')
         self.content_bucket_name = "nbs-wiki-content"
         self.users_bucket_name = "nbs-usrs-psswrds"
-        self.content_bucket = storage.Client().get_bucket(self.content_bucket_name)
+        self.content_bucket = storage.Client().get_bucket(
+            self.content_bucket_name)
         self.users_bucket = storage.Client().get_bucket(self.users_bucket_name)
-
-        
 
     def get_wiki_page(self, name: str) -> str:
         """Get a wiki page from the Datastore by name.
@@ -51,8 +51,6 @@ class Backend:
             return f"{character_name}|{info}|{world}"
         return None
 
-
-
     def get_all_page_names(self) -> list[str]:
         """ Get a list of all character names from the Datastore.
         
@@ -62,7 +60,6 @@ class Backend:
         query = self.client.query(kind='Character')
         results = list(query.fetch())
         return [entity.key.name for entity in results]
-
 
     # I changed this method's parameters!! added path and name
 
@@ -76,7 +73,8 @@ class Backend:
             char_world: A string representing the world of the character.
         """
         # Save the image to the GCS bucket
-        image_blob = self.content_bucket.blob("character-images/" + char_name + ".png")
+        image_blob = self.content_bucket.blob("character-images/" + char_name +
+                                              ".png")
         image_blob.upload_from_file(f, content_type=f.content_type)
 
         # Save the character info to the Datastore
@@ -88,9 +86,6 @@ class Backend:
             'World': char_world,
         })
         self.client.put(wiki_page)
-
-
-
 
     def sign_up(self, new_user_name: str, new_password: str) -> bool:
         """Registers a new user with a username and password.
@@ -112,12 +107,9 @@ class Backend:
         hashed_password = hashlib.blake2b(salted_password.encode()).hexdigest()
 
         new_user = datastore.Entity(key=user_key)
-        new_user.update({
-            'hashed_password': hashed_password
-        })
+        new_user.update({'hashed_password': hashed_password})
         self.client.put(new_user)
         return True
-
 
     def sign_in(self, username: str, password: str) -> bool or int:
         """Sign in an existing user with the provided username and password.
@@ -135,14 +127,14 @@ class Backend:
             return -1
 
         hashed_password = user['hashed_password']
-        verify_password = hashlib.blake2b(f"{username}nbs{password}".encode()).hexdigest()
+        verify_password = hashlib.blake2b(
+            f"{username}nbs{password}".encode()).hexdigest()
         return verify_password == hashed_password
 
     # def hash_password(self, username: str, password: str) -> str:
     #     salted_password = f"{username}nbs{password}"
     #     hashed_password = hashlib.blake2b(salted_password.encode()).hexdigest()
     #     return hashed_password
-
 
     def get_image(self, filepath: str, page_name: str) -> str:
         """Get the encoded image data of a character image from the GCS bucket.
@@ -158,8 +150,6 @@ class Backend:
         image_data = blob.download_as_bytes()
         encoded_image_data = base64.b64encode(image_data).decode("utf-8")
         return encoded_image_data
-
-
 
     def allowed_file(self, filename):
         """Check if a given file name has an allowed extension.
