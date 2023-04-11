@@ -24,13 +24,21 @@ class Backend:
             the Google Cloud Datastore service for the project 'sds-project-nbs-wiki'.
     """
 
-    def __init__(self) -> None:
-        self.client = datastore.Client('sds-project-nbs-wiki')
-        self.content_bucket_name = "nbs-wiki-content"
-        self.users_bucket_name = "nbs-usrs-psswrds"
-        self.content_bucket = storage.Client().get_bucket(
-            self.content_bucket_name)
-        self.users_bucket = storage.Client().get_bucket(self.users_bucket_name)
+    def __init__(
+        self,
+        client=datastore.Client('sds-project-nbs-wiki'),
+        content_bucket=storage.Client().get_bucket("nbs-wiki-content"),
+        users_bucket=storage.Client().get_bucket("nbs-usrs-psswrds")
+    ) -> None:
+
+        self.client = client
+        self.content_bucket = content_bucket
+        self.users_bucket = users_bucket
+        # self.content_bucket_name = "nbs-wiki-content"
+        # self.users_bucket_name = "nbs-usrs-psswrds"
+        # self.content_bucket = storage.Client().get_bucket(
+        #     self.content_bucket_name)
+        # self.users_bucket = storage.Client().get_bucket(self.users_bucket_name)
 
     def get_wiki_page(self, name: str) -> str:
         """Get a wiki page from the Datastore by name.
