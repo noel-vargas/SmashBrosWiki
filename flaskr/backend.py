@@ -138,6 +138,11 @@ class Backend:
         verify_password = hashlib.blake2b(f"{username}nbs{password}".encode()).hexdigest()
         return verify_password == hashed_password
 
+    # def hash_password(self, username: str, password: str) -> str:
+    #     salted_password = f"{username}nbs{password}"
+    #     hashed_password = hashlib.blake2b(salted_password.encode()).hexdigest()
+    #     return hashed_password
+
 
     def get_image(self, filepath: str, page_name: str) -> str:
         """Get the encoded image data of a character image from the GCS bucket.
