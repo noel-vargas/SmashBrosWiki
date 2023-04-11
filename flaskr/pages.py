@@ -138,6 +138,7 @@ def make_endpoints(app, backend):
     @app.route("/logout", methods=["GET", "POST"])
     @login_required
     def logout():
+        """Handles the log out process for logged-in users."""
         user.active = False
         logout_user()
         return redirect(url_for("login"))
