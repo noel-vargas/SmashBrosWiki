@@ -54,6 +54,22 @@ def test_get_all_page_names(mock_backend):
     assert result == ["Mario", "Link"]
 
 
+def test_get_all_usernames(mock_backend):
+    entity1 = MagicMock()
+    entity1.key.name = "sebagabs"
+    entity2 = MagicMock()
+    entity2.key.name = "Noel"
+    entity3 = MagicMock()
+    entity3.key.name = "Bryan"
+
+    mock_backend.client.query.return_value.fetch.return_value = [
+        entity1, entity2, entity3
+    ]
+
+    result = mock_backend.get_all_page_names()
+    assert result == ["sebagabs", "Noel", "Bryan"]
+
+
 def test_upload(mock_backend):
     mock_backend.content_bucket.blob.return_value = MagicMock(
         upload_from_file=MagicMock())
