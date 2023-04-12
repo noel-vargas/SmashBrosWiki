@@ -84,7 +84,7 @@ class Tracker:
         ---
         Args:
             username:
-                Sting representing username of a user.
+                String representing username of a user.
 
         Returns:
             List of strings representing the names of uploaded pages.
@@ -92,3 +92,25 @@ class Tracker:
         user_key = self.key("UserUploads", username)
         user_uploads = self.client.get(user_key)
         return user_uploads["uploads"] if user_uploads else None
+
+    def upvote_page(self, pagename: str, username: str) -> None:
+        """
+        Keeps track of user that have upvoted a page.
+
+        ---
+        Args:
+            pagename:
+                String containing the name of a wiki page.
+            username:
+                String representing username of a user.
+        """
+        with self.client.transaction() as trans:
+            page_key = self.key("Upvote", pagename)
+            page = self.client.get(page_key)
+            if page:
+                page["upvotes"].append(username)
+                trans.put(page)
+            else:
+                new_page_upvote = datastore.Entity(key=page_key)
+                new_page_upvote.update({"upvotes" : [username]})
+                trans.put(page)
