@@ -76,6 +76,17 @@ class Backend:
         query = self.client.query(kind='Character')
         results = list(query.fetch())
         return [entity.key.name for entity in results]
+    
+    def get_all_usernames(self) -> list[str]:
+        """Get a list of all usernames from the Datastore.
+        
+        ---
+        Returns:
+            A list of strings representing all the usernames.
+        """
+        query = self.client.query(kind='User')
+        results = list(query.fetch())
+        return [entity.key.name for entity in results]
 
     # I changed this method's parameters!! added path and name
 
