@@ -1,13 +1,11 @@
 {% extends 'base.html' %}
-
-{% block head %} <title>Character Info</title> {% endblock %}
+{% block head %} <title>{{ character_name }}</title> {% endblock %}
 
 {% block body %}
-    <div>
-        <img src="data:image/png;base64,{{ page_image }}" />
-    </div>
-    <div>
-        <h2>{{ character_name }}</h2>
-        <p>{{ description }}</p>
-    </div>
+
+    <h1>{{ character_name }}</h1>
+    <h3>World: {{ world }}</h3>  <!-- Add world information to the page -->
+    <img src="data:image/png;base64, {{ page_image }}" alt="{{ character_name }} image">
+    <p>{{ description }}</p>
+
 {% endblock %}

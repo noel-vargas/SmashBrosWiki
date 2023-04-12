@@ -75,7 +75,7 @@ def make_endpoints(app, backend):
     @app.route("/pages")
     def pages():
         """Renders the page index for wiki pages."""
-        name_list = backend.get_all_page_names("pages/")
+        name_list = backend.get_all_page_names()
         return render_template("pages.html",
                                name_list=name_list,
                                active=user.active,
@@ -85,12 +85,13 @@ def make_endpoints(app, backend):
     def show_character_info(page_name):
         """Renders specific (clicked) wiki page based on page_name."""
         page_content = backend.get_wiki_page(page_name)
-        character_name, description = page_content.split(',', 1)
+        character_name, description, world, = page_content.split('|', 3)
         page_image = backend.get_image("character-images/", page_name)
         return render_template("page.html",
                                character_name=character_name,
                                description=description,
                                page_image=page_image,
+                               world=world,
                                active=user.active,
                                name=user.get_id())
 
@@ -136,6 +137,7 @@ def make_endpoints(app, backend):
     @app.route("/logout", methods=["GET", "POST"])
     @login_required
     def logout():
+        """Handles the log out process for logged-in users."""
         user.active = False
         logout_user()
         return redirect(url_for("login"))
@@ -149,6 +151,7 @@ def make_endpoints(app, backend):
             file = request.files['file']
             name = str(request.values['char_name'])
             info = str(request.values['info'])
+            world = str(request.values['world'])
             checker = True
             if file.filename == '':
                 checker = False
@@ -159,11 +162,14 @@ def make_endpoints(app, backend):
             if info == '':
                 checker = False
                 flash('No Character Info Given')
+            if world == '':
+                checker = False
+                flash('No Character World Given')
             if not backend.allowed_file(file.filename):
                 checker = False
                 flash('Incorrect File Type')
             if checker:
-                backend.upload(file, name, info)
+                backend.upload(file, name, info, world)
         return render_template("upload.html",
                                active=user.active,
                                name=user.get_id())

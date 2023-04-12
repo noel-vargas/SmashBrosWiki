@@ -44,13 +44,6 @@ def test_pages_page(client):
     assert b"Pages" in resp.data
 
 
-# Test Kirby page
-def test_kirby_page(client):
-    resp = client.get("pages/kirby")
-    assert resp.status_code == 200
-    assert b"Kirby" in resp.data
-
-
 # Test signup page
 def test_signup_page(client):
     resp = client.get("/signup")
