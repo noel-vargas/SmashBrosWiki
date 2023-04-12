@@ -1,7 +1,6 @@
 from google.cloud import datastore, storage
 import os, base64, csv
 import hashlib
-from .tracker import Tracker
 """ Provides a backend implementation for the Super Smash Bros. wiki project using Google Cloud Storage (GCS) and Google Cloud Datastore """
 
 
@@ -26,6 +25,7 @@ class Backend:
     """
 
     def __init__(self,
+                 tracker,
                  client=None,
                  content_bucket=None,
                  users_bucket=None,
@@ -47,6 +47,7 @@ class Backend:
         self.content_bucket = content_bucket
         self.users_bucket = users_bucket
         self.key = key_method
+        self.tracker = tracker
 
     def get_wiki_page(self, name: str) -> str:
         """Get a wiki page from the Datastore by name.
@@ -113,7 +114,7 @@ class Backend:
             'World': char_world,
         })
         self.client.put(wiki_page)
-        Tracker().add_upload(username=uploader, pagename=char_name)
+        self.tracker.add_upload(username=uploader, pagename=char_name)
 
     def sign_up(self, new_user_name: str, new_password: str) -> bool:
         """Registers a new user with a username and password.

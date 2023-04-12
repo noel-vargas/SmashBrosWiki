@@ -20,21 +20,19 @@ def create_app(test_config=None):
     # By default the dev environment uses the key 'dev'
     app.config.from_mapping(SECRET_KEY='dev',)
     backend = None
-    tracker = None
     if test_config is None:
         # Load the instance config, if it exists, when not testing.
         # This file is not committed. Place it in production deployments.
         app.config.from_pyfile('config.py', silent=True)
-        backend = Backend()
-        tracker = Tracker()
+        backend = Backend(tracker=Tracker())
     else:
         # Load the test config if passed in.
-        backend = Backend(MagicMock(), MagicMock(), MagicMock())
-        tracker = Tracker(MagicMock(), MagicMock())
+        mock_tracker = Tracker(MagicMock(), MagicMock())
+        backend = Backend(mock_tracker, MagicMock(), MagicMock(), MagicMock())
         app.config.from_mapping(test_config)
 
     # TODO(Project 1): Make additional modifications here for logging in, backends
     # and additional endpoints.
 
-    pages.make_endpoints(app, backend, tracker)
+    pages.make_endpoints(app, backend)
     return app
