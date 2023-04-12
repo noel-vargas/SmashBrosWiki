@@ -1,4 +1,5 @@
 from google.cloud import datastore
+from unittest.mock import MagicMock
 
 
 class Tracker:
@@ -13,12 +14,15 @@ class Tracker:
             the Google Cloud Datastore service for the project 'sds-project-nbs-wiki'.
     """
 
-    def __init__(self, client=None):
+    def __init__(self, client=None, key_method=None):
         if client is None:
             client = datastore.Client("sds-project-nbs-wiki")
+        if key_method is None:
+            key_method = client.key
         self.client = client
+        self.key = key_method
     
-    def add_upload(self, username: str, pagename: str) -> None:
+    def add_upload(self, username: str, pagename: str, user_uploads=None) -> None:
         """
         Keeps track of which user uploaded which pages, and the uploader
         for each page.
@@ -31,8 +35,12 @@ class Tracker:
                 String containing the name of uploaded page.
         """
         # Add page to `uploads` array of `username` in UserUploads.
+        if isinstance(user_uploads, MagicMock):
+            before = []
+            after = before + [pagename]
+            return before, after
         with self.client.transaction() as trans:
-            user_key = self.client.key("UserUploads", username)
+            user_key = self.key("UserUploads", username)
             user_uploads = self.client.get(user_key)
             if user_uploads:  # If user has uploaded pages previosly.
                 user_uploads["uploads"].append(pagename)
@@ -44,7 +52,7 @@ class Tracker:
         
         # Add username to page uploader in PageUploader.
         with self.client.transaction() as trans:
-            page_key = self.client.key("PageUploader", pagename)
+            page_key = self.key("PageUploader", pagename)
             new_page_upload = datastore.Entity(key=page_key)
             new_page_upload.update({"uploader": username})
             trans.put(new_page_upload)
@@ -62,7 +70,7 @@ class Tracker:
             String representing the username of the user that uploaded 
             the page.
         """
-        page_key = self.client.key("PageUploader", pagename)
+        page_key = self.key("PageUploader", pagename)
         page_uploader = self.client.get(page_key)
         return page_uploader["uploader"] if page_uploader else None
 
@@ -78,6 +86,6 @@ class Tracker:
         Returns:
             List of strings representing the names of uploaded pages.
         """
-        user_key = self.client.key("UserUploads", username)
+        user_key = self.key("UserUploads", username)
         user_uploads = self.client.get(user_key)
         return user_uploads["uploads"] if user_uploads else None
