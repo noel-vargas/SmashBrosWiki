@@ -76,7 +76,7 @@ class Backend:
         query = self.client.query(kind='Character')
         results = list(query.fetch())
         return [entity.key.name for entity in results]
-    
+
     def get_all_usernames(self) -> list[str]:
         """Get a list of all usernames from the Datastore.
         

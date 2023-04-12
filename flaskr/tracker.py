@@ -21,8 +21,11 @@ class Tracker:
             key_method = client.key
         self.client = client
         self.key = key_method
-    
-    def add_upload(self, username: str, pagename: str, user_uploads=None) -> None:
+
+    def add_upload(self,
+                   username: str,
+                   pagename: str,
+                   user_uploads=None) -> None:
         """
         Keeps track of which user uploaded which pages, and the uploader
         for each page.
@@ -49,14 +52,14 @@ class Tracker:
                 new_user_upload = datastore.Entity(key=user_key)
                 new_user_upload.update({"uploads": [pagename]})
                 trans.put(new_user_upload)
-        
+
         # Add username to page uploader in PageUploader.
         with self.client.transaction() as trans:
             page_key = self.key("PageUploader", pagename)
             new_page_upload = datastore.Entity(key=page_key)
             new_page_upload.update({"uploader": username})
             trans.put(new_page_upload)
-    
+
     def get_page_uploader(self, pagename: str) -> str:
         """
         Get the username of the user who uploaded the parameter page.

@@ -23,7 +23,6 @@ def mock_tracker():
 #     uploads_before, uploads_after = mock_tracker.add_upload(username, pagename)
 #     assert len(uploads_before) + 1 == len(uploads_after)
 
-
 # def test_upload(mock_backend):
 #     mock_backend.content_bucket.blob.return_value = MagicMock(
 #         upload_from_file=MagicMock())
@@ -41,11 +40,9 @@ def test_get_page_uploader(mock_tracker):
     # Configure the tracker . . . TODO
     def get_side_effect(key):
         if key.name == "Ness":
-            return {
-                "uploader": "sebagabs"
-            }
+            return {"uploader": "sebagabs"}
         return None
-        
+
     mock_tracker.client.get.side_effect = get_side_effect
 
     result = mock_tracker.get_page_uploader("Ness")
@@ -59,9 +56,7 @@ def test_get_pages_uploaded(mock_tracker):
     # Configure the tracker . . . TODO
     def get_side_effect(key):
         if key.name == "sebagabs":
-            return {
-                "uploads": ["Lucas", "Ness"]
-            }
+            return {"uploads": ["Lucas", "Ness"]}
         return None
 
     mock_tracker.client.get.side_effect = get_side_effect
