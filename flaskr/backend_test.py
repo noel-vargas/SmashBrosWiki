@@ -59,7 +59,7 @@ def test_upload(mock_backend):
         upload_from_file=MagicMock())
 
     f = MagicMock(content_type='image/png', tell=MagicMock(return_value=0))
-    mock_backend.upload(f, 'Mario', 'A character from the Mario series.',
+    mock_backend.upload("tester", f, 'Mario', 'A character from the Mario series.',
                         'Mushroom Kingdom')
 
     mock_backend.content_bucket.blob.assert_called_with(
