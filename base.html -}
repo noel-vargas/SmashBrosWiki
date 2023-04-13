@@ -1,0 +1,657 @@
+[33mcommit 858366a775ffeb980f6deada508e344c969cbcc0[m[33m ([m[1;36mHEAD -> [m[1;32mF2R4[m[33m)[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Thu Apr 13 23:32:14 2023 +0000
+
+    Completed dropdown menu for pages and upload | Implemented filter by world function
+
+[33mcommit 7054a63c2444ebfa8516237dc368ea7556e94ebc[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Thu Apr 13 23:31:31 2023 +0000
+
+    Completed the get_worlds method to retreive all available worlds
+
+[33mcommit fde1c3a83a9dfcfd40182e3c5ba5a272edf59906[m[33m ([m[1;31morigin/F2R3[m[33m, [m[1;32mF2R3[m[33m)[m
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Thu Apr 13 23:04:40 2023 +0000
+
+    Retreive characters from the same world.
+
+[33mcommit 8fac42a81be31a3f4775b3f79f33dc462281220f[m[33m ([m[1;31morigin/F3R1[m[33m)[m
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Thu Apr 13 06:50:00 2023 +0000
+
+    Implemented F3R1 with its unit test
+
+[33mcommit 90d2a8da6bfb62102f3ffafffa94d24283949405[m[33m ([m[1;31morigin/F3R2[m[33m)[m
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Thu Apr 13 05:26:37 2023 +0000
+
+    Implemented F3R2 with its unit test
+
+[33mcommit 43ee004af231629159befc566c03b035ba3aed14[m[33m ([m[1;31morigin/F3R3[m[33m, [m[1;32mF3R3[m[33m)[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Thu Apr 13 02:28:12 2023 +0000
+
+    Forgot the lint
+
+[33mcommit 356ff23f1ebf922952514f38832f109ffe12147a[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Thu Apr 13 02:26:26 2023 +0000
+
+    created the search bar
+
+[33mcommit 812dfc1a75af748d904de2152f4d89554632deca[m[33m ([m[1;31morigin/F1R3[m[33m, [m[1;32mF1R3[m[33m)[m
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Thu Apr 13 01:04:35 2023 +0000
+
+    Lint Autoformatting
+
+[33mcommit ffe3e74feab39ba49b21eae8e7c8c5d0cd37135c[m
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Thu Apr 13 00:57:10 2023 +0000
+
+    Finished F1R3 and add unit tests
+
+[33mcommit 93259a6b36d80b50b25ebd24d1e2bb7cad9d36fc[m
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Thu Apr 13 00:03:19 2023 +0000
+
+    Added upvoting to frontend
+
+[33mcommit 5569f4ae82505e00150128381b89ba73d47ea8ca[m
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Wed Apr 12 21:58:20 2023 +0000
+
+    Created backend function to track upvotes
+
+[33mcommit 0d8c732190a3be698d3c4464d0966016f76e069f[m[33m ([m[1;31morigin/feature1-req[m[33m)[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Apr 12 06:10:20 2023 +0000
+
+    Add missing unit test
+
+[33mcommit d91a9fa7abdf54f39d501e1adc225a8eb096f17d[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Apr 12 05:51:03 2023 +0000
+
+    Fix Tracker endpoints for unittest job in GitLab
+
+[33mcommit dc16eadc71f05486644c23a00fd138f9a2a23bf1[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Apr 12 05:29:00 2023 +0000
+
+    Ran lint autoformatting
+
+[33mcommit 31695de894548b3fb21d2ebbd1ae8c64d3415de3[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Apr 12 05:24:19 2023 +0000
+
+    Add endpoints for Tracker object
+
+[33mcommit b0f23739315b15693ceadde36dc44e7e67ecc744[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Apr 12 05:14:12 2023 +0000
+
+    Add a get all users method
+
+[33mcommit c4c727e8fc8997c432ea00929b971d7d358dd25b[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Apr 12 05:03:31 2023 +0000
+
+    Create testing for Tracker
+
+[33mcommit 9894c0c70b0f14af052f714541fc807cd08fba2c[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Apr 12 05:02:15 2023 +0000
+
+    Update backend call to account for Trakcer
+
+[33mcommit b9778432974442885bc6caa906cdd23531b1c520[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Apr 12 05:01:17 2023 +0000
+
+    Update backend testing to account for Tracker
+
+[33mcommit bb3140c3ee14d39df62a345f88e41921eeaabcf0[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Apr 12 02:19:46 2023 +0000
+
+    Create Tracker classs and start F1R1
+
+[33mcommit a69ce83f5dbbac08e3884e9f157238996fb2afa6[m[33m ([m[1;32mmain[m[33m)[m
+Merge: 363718d a2b10e8
+Author: Sebastian Maldonado Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Apr 12 00:37:13 2023 +0000
+
+    Merge branch 'GCS_to_GoogleDataStore' into 'main'
+    
+    Gcs to google data store
+    
+    See merge request nbs/project!17
+
+[33mcommit a2b10e8997e2823f861f3de2e167fb83764daf78[m[33m ([m[1;31morigin/GCS_to_GoogleDataStore[m[33m, [m[1;32mGCS_to_GoogleDataStore[m[33m)[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Tue Apr 11 18:44:04 2023 +0000
+
+    Testing __init__ parameters
+
+[33mcommit ded8bde9355c3304bdc535a2d0f11567fc2e5a68[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Tue Apr 11 18:24:03 2023 +0000
+
+    Fixed backend_test
+
+[33mcommit 63af448bcfc5bf35db1ff0c1306e41e5bac21142[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Tue Apr 11 16:44:40 2023 +0000
+
+    Ran linting on code format
+
+[33mcommit 871cc27dbe473127f4743844dbd85fb3a5fec135[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Tue Apr 11 06:00:48 2023 +0000
+
+    Finished Tests, Commented Code using Google Style Guide
+
+[33mcommit e813cb915dec22ec00c2f166c7570e4f5574d94c[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Tue Apr 11 02:06:48 2023 +0000
+
+    added comments to the code
+
+[33mcommit a35755d69125dda9900db10be78c7e43c66e8a8a[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Tue Apr 11 01:28:30 2023 +0000
+
+    Google Cloud Storage -> Google Data Store
+
+[33mcommit e0da54daecaff2e5121d7b4c41db45f38a5bcdf9[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Tue Apr 11 00:23:45 2023 +0000
+
+    Half way done with image in google cloud
+
+[33mcommit 4cab153cd11494848e6ad6e6633cf43b12ea431b[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Mon Apr 10 15:04:07 2023 +0000
+
+    Half of code using GoogleDataStore
+
+[33mcommit 363718d0d358173d1eaee568e44e380b51d5f3a6[m[33m ([m[1;32mAddStyles[m[33m)[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Tue Apr 4 19:32:53 2023 +0000
+
+    Add dependencies to prod (stretch goal)
+
+[33mcommit a64f7576f1435f45c4e1a259c473e207ad2628c0[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Tue Apr 4 19:26:00 2023 +0000
+
+    Change jobs to run on merge_request
+
+[33mcommit 019cfa1e549182dc66c4c44256e4a0fc9eefcaa4[m
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Wed Mar 29 20:38:38 2023 +0000
+
+    Fixed backend import
+
+[33mcommit 55aa8087a08651c9e26502c9fb472cafd57b7e55[m
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Wed Mar 29 20:32:45 2023 +0000
+
+    Change Backend acces to an endpoint
+
+[33mcommit 795e5411492c7111df9eab20ee97d54a05bfef37[m
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Wed Mar 29 20:14:47 2023 +0000
+
+    Fixed pytest version
+
+[33mcommit 8abb21e9589106ba0cd5b13ead22a107c797ec1f[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Tue Mar 28 20:32:51 2023 +0000
+
+    Add Production and Deployment job
+
+[33mcommit 501b680b614ea9d5ed31c274794926769128264f[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Thu Mar 23 20:31:33 2023 +0000
+
+    Fixed YAML format
+
+[33mcommit 0915520b221c1f271a1b1402c90dabca47595d0f[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Thu Mar 23 20:27:58 2023 +0000
+
+    Fixed unittest job
+
+[33mcommit f0b9a72f025ed8a3f21055fa2f48547059c57a29[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Thu Mar 23 20:12:53 2023 +0000
+
+    Add unittest job
+
+[33mcommit db0b2629c4e24b3d510e7d100910b77adf23eee7[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Thu Mar 23 20:03:19 2023 +0000
+
+    Autoformated code
+
+[33mcommit 9862acf6bdd696c79654fe3aac8dabca65431af7[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Thu Mar 23 19:59:03 2023 +0000
+
+    Changed YAML file
+
+[33mcommit 42cfb39b1ba5b5a4d906e77cb808b8b1fd512a29[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Thu Mar 23 19:53:10 2023 +0000
+
+    Installed YAML
+
+[33mcommit a8bbdbc9defb8bb4ae153793964ff81f52df3399[m
+Merge: a2c8943 4c2d4e8
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Wed Mar 8 03:57:59 2023 +0000
+
+    Merge branch 'pages-documentation' into 'main'
+    
+    Pages documentation
+    
+    See merge request nbs/project!14
+
+[33mcommit 4c2d4e83353f981a5d9ff982e1a3395ff5877836[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Mar 8 03:57:11 2023 +0000
+
+    Add some coments and format
+
+[33mcommit 8edba4a06ac3ee57d4d6c9c418d7450a35693f0a[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Mar 8 03:50:31 2023 +0000
+
+    Add author names
+
+[33mcommit 8cf9a8f6e056870d8874c77e9303a6bfe958235b[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Mar 8 03:44:50 2023 +0000
+
+    Fix grammar mistake in class
+
+[33mcommit a2c89433a3c9824cea04aacf7e0c3327b4af3d91[m
+Merge: 7959f49 643cb54
+Author: Sebastian Maldonado Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Mar 8 03:40:14 2023 +0000
+
+    Merge branch 'UnitTests' into 'main'
+    
+    Added unit tests for flask routes
+    
+    See merge request nbs/project!13
+
+[33mcommit 643cb5478ade18e2fe05174b8136a756a80b9780[m
+Merge: 7bbca6c 7959f49
+Author: Sebastian Maldonado Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Mar 8 03:40:04 2023 +0000
+
+    Merge branch 'main' into 'UnitTests'
+    
+    # Conflicts:
+    #   flaskr/backend.py
+
+[33mcommit 7bbca6c50e177baa492cf1a83d356847c6a44716[m[33m ([m[1;31morigin/UnitTests[m[33m)[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Wed Mar 8 03:37:36 2023 +0000
+
+    Added unit tests for flask routes
+
+[33mcommit 7959f49d766dbafd7f04b3c4346538c48c17bbfe[m
+Merge: 4502562 313dfab
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Wed Mar 8 02:38:27 2023 +0000
+
+    Merge branch 'FixBug' into 'main'
+    
+    Fixed bug
+    
+    See merge request nbs/project!12
+
+[33mcommit 313dfab664c7d4d49e963ba96d7336aa1ebc970b[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Wed Mar 8 02:37:17 2023 +0000
+
+    Fixed bug
+
+[33mcommit 4502562c944933f9287daf1a5044655f069820ed[m
+Merge: e63ee25 44bafe5
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Wed Mar 8 02:31:11 2023 +0000
+
+    Merge branch 'uploadUpgrade' into 'main'
+    
+    Improve Upload Method
+    
+    See merge request nbs/project!11
+
+[33mcommit 44bafe5ac0c015416a7d86ae29e04f5b3201f30c[m
+Merge: 3fba8fd e63ee25
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Wed Mar 8 02:31:05 2023 +0000
+
+    Merge branch 'main' into 'uploadUpgrade'
+    
+    # Conflicts:
+    #   flaskr/backend.py
+
+[33mcommit 3fba8fd5f5cbf6a234ee5262b0bf56de1372c38c[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Wed Mar 8 02:27:30 2023 +0000
+
+    Improve Upload Method
+
+[33mcommit e63ee25cadee98a55eba45cb048ae471935b325e[m
+Merge: ec230d0 e8a9d68
+Author: Sebastian Maldonado Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Mar 8 01:52:11 2023 +0000
+
+    Merge branch 'final-backend-format' into 'main'
+    
+    Finishg format and commenting
+    
+    See merge request nbs/project!10
+
+[33mcommit e8a9d68eebd983df9ea6ba5dc9f2a82c13544ae9[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Mar 8 01:51:51 2023 +0000
+
+    Finishg format and commenting
+
+[33mcommit ec230d0572786671fe756266777c67925d3c1c7f[m
+Merge: 0f606f7 31fd0cc
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Wed Mar 8 01:34:48 2023 +0000
+
+    Merge branch 'format-backend' into 'main'
+    
+    Format and document class and methods for backend.py
+    
+    See merge request nbs/project!9
+
+[33mcommit 31fd0cca25ed366fb65d57b03186c0b4da5a419f[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Mar 8 01:30:10 2023 +0000
+
+    Document class and methods
+
+[33mcommit 0f606f7bfddc994fcead0c369e170916f3edd754[m
+Merge: 3c20d40 13c835a
+Author: Sebastian Maldonado Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Mar 8 00:55:33 2023 +0000
+
+    Merge branch 'DynamicPages' into 'main'
+    
+    Dynamic pages
+    
+    See merge request nbs/project!8
+
+[33mcommit 13c835a4366543371ce94a7e1f5c877b95d1b309[m[33m ([m[1;31morigin/DynamicPages[m[33m, [m[1;32mDynamicPages[m[33m)[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Wed Mar 8 00:54:45 2023 +0000
+
+    Dynamic Pages
+
+[33mcommit 3c20d4070d03021ca8aea9a11e5536ce1421f4a2[m
+Merge: 59d13d1 2a7786b
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Wed Mar 8 00:43:47 2023 +0000
+
+    Merge branch 'upload' into 'main'
+    
+    Implemented Images Upload
+    
+    See merge request nbs/project!7
+
+[33mcommit 2a7786b4fe6655618573cacf26920cedd3f15ea6[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Wed Mar 8 00:27:53 2023 +0000
+
+    Fixed Flashing Messages
+
+[33mcommit 6695486d7995ac7bb1fb75f4291810327007f990[m[33m ([m[1;31morigin/upload[m[33m)[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Tue Mar 7 05:42:32 2023 +0000
+
+    Implemented Images Upload
+
+[33mcommit 59d13d18f5eb0d614c0351e7fc8895a1574a3f27[m
+Merge: 847ac1b 92ffb97
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Mon Mar 6 05:19:03 2023 +0000
+
+    Merge branch 'debugging' into 'main'
+    
+    Fix missing code
+    
+    See merge request nbs/project!6
+
+[33mcommit 92ffb97c2829a12f29db8cb248470152e80b8c83[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Mon Mar 6 05:17:47 2023 +0000
+
+    Fix missing code
+
+[33mcommit 847ac1b0f4fd9a1ece66e4253054571cfea47d7b[m
+Merge: 15ffc87 c66649b
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Mon Mar 6 05:03:49 2023 +0000
+
+    Merge branch 'jinja_temp' into 'main'
+    
+    Implemented Jinja Navigation Bar
+    
+    See merge request nbs/project!5
+
+[33mcommit c66649baa708106c0a398abf3a468e1e164e97f2[m
+Merge: f2d4ad4 07c98d9
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Mon Mar 6 05:01:55 2023 +0000
+
+    Merge branch 'jinja_temp' of https://git.sds-techx.in/nbs/project into jinja_temp
+
+[33mcommit f2d4ad44c33bdaf8c146c03fafc59e9a505672a9[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Mon Mar 6 05:00:05 2023 +0000
+
+    Fixed bugged
+
+[33mcommit 07c98d9c536c3186b14700f28e3d099c5b88616e[m
+Merge: 4d9e033 15ffc87
+Author: Bryan D Vega Gonzalez <bryan_vega@techexchange.in>
+Date:   Mon Mar 6 04:55:56 2023 +0000
+
+    Merge branch 'main' into 'jinja_temp'
+    
+    # Conflicts:
+    #   flaskr/pages.py
+    #   flaskr/templates/pages.html
+
+[33mcommit 4d9e0330af105d891cd6e1b5cfe6b6b573891de3[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Mon Mar 6 04:50:31 2023 +0000
+
+    Implemented Jinja Navigation Bar
+
+[33mcommit 15ffc8793049d515dc7e41c28eb77ba369815242[m
+Merge: db11c77 9dc6b8b
+Author: Sebastian Maldonado Rosado <sebastian.maldonado@techexchange.in>
+Date:   Mon Mar 6 02:43:03 2023 +0000
+
+    Merge branch 'About-Home-Pages' into 'main'
+    
+    About home pages
+    
+    See merge request nbs/project!4
+
+[33mcommit 9dc6b8b4e6152b12f483b78b2e70136376e2e4d1[m
+Merge: 6c2a8f0 db11c77
+Author: Sebastian Maldonado Rosado <sebastian.maldonado@techexchange.in>
+Date:   Mon Mar 6 02:42:56 2023 +0000
+
+    Merge branch 'main' into 'About-Home-Pages'
+    
+    # Conflicts:
+    #   flaskr/pages.py -> Resolved
+
+[33mcommit db11c77db917fe25563a583289f6f0bb5fdd047d[m
+Merge: ad83716 d24f72b
+Author: Sebastian Maldonado Rosado <sebastian.maldonado@techexchange.in>
+Date:   Sun Mar 5 21:57:23 2023 +0000
+
+    Merge branch 'login-route' into 'main'
+    
+    Login and Logout Routes
+    
+    See merge request nbs/project!3
+
+[33mcommit ad83716bdd565818d3fcfde4108e236b3fad918f[m
+Merge: 4d32595 1283752
+Author: Sebastian Maldonado Rosado <sebastian.maldonado@techexchange.in>
+Date:   Sun Mar 5 21:56:58 2023 +0000
+
+    Merge branch 'account-methods' into 'main'
+    
+    /signup route initial implementation
+    
+    See merge request nbs/project!2
+
+[33mcommit 6c2a8f0d14240e3c2fc0869141be35617e599018[m[33m ([m[1;31morigin/Home_About_Pages[m[33m, [m[1;31morigin/Home-About-Pages[m[33m, [m[1;31morigin/About-Home-Pages[m[33m, [m[1;32mHome_About_Pages[m[33m, [m[1;32mHome-About-Pages[m[33m)[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Sun Mar 5 21:01:30 2023 +0000
+
+    jfif->png
+
+[33mcommit caae62043bcffdc0c65b9fdee1fa714f0fe3ab45[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Sun Mar 5 19:48:52 2023 +0000
+
+    Character images are now shown | code is more dynamic | titles were changed for each character
+
+[33mcommit d24f72b17f695f7161ab2db2433a56593e81f3bc[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Sun Mar 5 19:33:49 2023 +0000
+
+    Implement  and  routes
+
+[33mcommit c35c317f560775c756bf7569bee8b13fbe05f457[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Sun Mar 5 19:33:08 2023 +0000
+
+    Create login.html page
+
+[33mcommit 1283752740981d9be1dc5388cab45e5d616557e1[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Sun Mar 5 17:37:11 2023 +0000
+
+    Handle if user tries to sign up with exisitng username
+
+[33mcommit 09e0e022b3c72b1701a3ed6623dce70f943ec571[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Sun Mar 5 17:36:08 2023 +0000
+
+    Modify return values of sign_up method
+
+[33mcommit 437fb4ceb5b09fcac1984e003baf4475dd35cbb5[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Sun Mar 5 07:01:59 2023 +0000
+
+    Partially implement  route
+
+[33mcommit 106a4eed4698417e2efb1b587b121d44cd9ed3e4[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Sun Mar 5 07:01:18 2023 +0000
+
+    Create html for  route
+
+[33mcommit c35e526c0239800eeea892d5deba882c70188cd7[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Sun Mar 5 06:28:32 2023 +0000
+
+    Update requirements
+
+[33mcommit ab238a8b242bf134930bcded468d2790977ea2b1[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Sun Mar 5 05:34:39 2023 +0000
+
+    Define sign up/in methods
+
+[33mcommit 2e6f3d3250a6cc116b71ee35995cc88de4de66cb[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Sat Mar 4 16:08:24 2023 +0000
+
+    fixed issue of character information not showing
+
+[33mcommit 4d325958525fec78690d55a89eb2cb60b75e7da5[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Sat Mar 4 04:46:58 2023 +0000
+
+    fixed image error for authors
+
+[33mcommit 52f048fae2ec5cd152ecf8b75eb57217f3142876[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Sat Mar 4 03:34:18 2023 +0000
+
+    fixed route to follow requirements
+
+[33mcommit 9c25f99706c51c1c36387f4c06f8a238e273b8de[m[33m ([m[1;31morigin/Backend_Implementation[m[33m, [m[1;32mBackend_Implementation[m[33m)[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Sat Mar 4 02:56:35 2023 +0000
+
+    You can now click on a character name and it's information will be displayed
+
+[33mcommit 7d895d74f3518705d7b1f89bf679784e6797873a[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Fri Mar 3 17:59:37 2023 +0000
+
+    Implemented links for home, about and pages, which change the templates accordingly. Additionally, the list of file names can now be viewed.
+
+[33mcommit 178282cd15e598191b11e0e5edb12e4647acea9a[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Wed Mar 1 02:53:34 2023 +0000
+
+    Implemented 3 routes
+
+[33mcommit 21ddbd4d5e07380aff61de732e26a5bc52fa2675[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Tue Feb 28 00:25:47 2023 +0000
+
+    added functionality to some functions
+
+[33mcommit 5f4cd8408d3fbad5b29ccba3b1528ae674c44ecd[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Thu Feb 16 21:40:57 2023 +0000
+
+    Requirement 4 complete
+
+[33mcommit d146cd84a2cf134cc2bb36f42283e2ab538d7900[m
+Author: Bryan Vega <bryan_vega@techexchange.in>
+Date:   Thu Feb 16 21:36:18 2023 +0000
+
+    Requirements 3 complete
+
+[33mcommit 202ec0e71e0ebcc145df1c75eb34c065a716463e[m
+Author: Noel Vargas <noel_vargas@techexchange.in>
+Date:   Thu Feb 16 20:51:09 2023 +0000
+
+    Checkpoint 2 complete
+
+[33mcommit f0ce2aee429e38b1f841f6815a7a4333d0e37b7b[m
+Author: Sebastian Maldonado-Rosado <sebastian.maldonado@techexchange.in>
+Date:   Wed Feb 15 20:52:52 2023 +0000
+
+    Add team member names and emails
+
+[33mcommit ae8b16aeb032e459d3c9d20a051403e6b637a9c0[m
+Author: Melissa Kohl <meljkohl@techexchange.in>
+Date:   Fri Feb 10 21:34:27 2023 +0000
+
+    Add starter code for project 1

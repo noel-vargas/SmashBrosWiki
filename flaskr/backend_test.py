@@ -183,3 +183,34 @@ def test_get_image(mock_backend):
 
     # Assert the expected image data is returned
     assert result == encoded_image_data
+
+
+def test_get_worlds(mock_backend):
+    # Create a sample filters_map dictionary
+    filters_map = {
+        "All": ["Mario", "Link", "Sonic"],
+        "Super Mario Bros.": ["Mario"],
+        "The Legend of Zelda": ["Link"],
+        "Sonic the Hedgehog": ["Sonic", "Luna"],
+    }
+    filters_map_str = json.dumps(filters_map)  # Serialize the dictionary to a string
+
+    # Set up the mock backend to return the filters_map_str
+    filters_entity = MagicMock()
+    filters_entity.__getitem__.return_value = filters_map_str
+    mock_backend.client.query.return_value.fetch.return_value = [filters_entity]
+
+    # Test the get_worlds function
+    result = mock_backend.get_worlds()
+    expected_result = [
+        "All",
+        "Super Mario Bros.",
+        "The Legend of Zelda",
+        "Sonic the Hedgehog",
+    ]
+    assert result == expected_result
+
+    # Test the get_worlds function when no worlds exist
+    mock_backend.client.query.return_value.fetch.return_value = []
+    result = mock_backend.get_worlds()
+    assert result == []
