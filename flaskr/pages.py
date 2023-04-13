@@ -89,7 +89,8 @@ def make_endpoints(app, backend):
         page_image = backend.get_image("character-images/", page_name)
         if request.method == "POST":
             if user.active:
-                backend.tracker.upvote_page(character_name, user.get_id())
+                action = backend.tracker.upvote_page(character_name, user.get_id())
+                flash(action)
             else:
                 flash("You need to be logged in to upvote a page.")
         return render_template("page.html",

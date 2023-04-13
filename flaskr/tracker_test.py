@@ -68,14 +68,18 @@ def test_get_pages_uploaded(mock_tracker):
     assert result is None
 
 
-# def test_upvote_page(mock_tracker):
-#     def get_side_effect(key):
-#         if key.name == "Ness":
-#             return {"upvotes" : ["sebagabs"]}
-#     mock_tracker.client.transaction.side_effect = get_side_effect
+def test_upvote_page(mock_tracker):
+    def get_side_effect(key):
+        if key.name == "Ness":
+            return {"upvotes" : ["sebagabs"]}
+    
+    mock_tracker.client.get.side_effect = get_side_effect
 
-#     result = mock_tracker.upvote_page(pagname, username)
-#     assert result == ""
+    result = mock_tracker.upvote_page("Ness", "sebagabs")
+    assert result == "You had already upvoted this page. Removed upvote from page." 
+
+    result = mock_tracker.upvote_page("Ness", "Noel")
+    assert result == "Page upvoted!"
 
 
 def test_get_upvotes(mock_tracker):

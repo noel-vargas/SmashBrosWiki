@@ -104,16 +104,24 @@ class Tracker:
             username:
                 String representing username of a user.
         """
+        action = ""        
         with self.client.transaction() as trans:
             page_key = self.key("Upvote", pagename)
             page = self.client.get(page_key)
             if page:
-                page["upvotes"].append(username)
+                if username in page["upvotes"]:  # If user already voted.
+                    page["upvotes"].remove(username)  # Remove upvote done by user.
+                    action = "You had already upvoted this page. Removed upvote from page." 
+                else:
+                    page["upvotes"].append(username)  # If user hasn't voted, add upvote to page.
+                    action = "Page upvoted!"
                 trans.put(page)
             else:
                 new_page_upvote = datastore.Entity(key=page_key)
                 new_page_upvote.update({"upvotes": [username]})
+                action = "Page upvoted!"
                 trans.put(new_page_upvote)
+        return action
 
     def get_upvotes(self, pagename: str) -> int:
         """
