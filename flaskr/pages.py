@@ -88,7 +88,8 @@ def make_endpoints(app, backend):
     @app.route("/pages")
     def pages():
         """Renders the page index for wiki pages."""
-        name_list = backend.get_all_page_names()
+        selected_world = request.args.get("world", "All")
+        name_list = backend.get_characters_by_world(selected_world)
         return render_template("pages.html",
                                name_list=name_list,
                                active=user.active,

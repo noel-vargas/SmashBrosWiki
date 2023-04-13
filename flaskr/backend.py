@@ -1,6 +1,7 @@
 from google.cloud import datastore, storage
 import os, base64, csv
 import hashlib
+import json
 """ Provides a backend implementation for the Super Smash Bros. wiki project using Google Cloud Storage (GCS) and Google Cloud Datastore """
 
 
@@ -233,3 +234,13 @@ class Backend:
         ordered_names.sort(key=lambda i: i[1], reverse=True)
 
         return [ranked_pages[0] for ranked_pages in ordered_names]
+
+    def get_characters_by_world(self, world: str) -> list[str]:
+        query = self.client.query(kind='Filters')
+        results = list(query.fetch())
+        if results:
+            filters_map_str = results[0]['FiltersMap']
+            filters_map = json.loads(
+                filters_map_str)  # Deserialize the string to a dictionary
+            return filters_map.get(world, [])
+        return []

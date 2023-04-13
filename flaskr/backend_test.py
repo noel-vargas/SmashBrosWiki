@@ -2,6 +2,7 @@ import pytest, hashlib, base64
 from werkzeug.security import generate_password_hash
 from unittest.mock import MagicMock
 from .backend import Backend
+import json
 
 
 # Mocking Google Cloud Storage and Datastore client
@@ -133,6 +134,36 @@ def test_rank_pages(mock_backend):
     result = mock_backend.rank_pages(
         ["Lucario", "Mario", "Link", "Ness", "Lucas"])
     assert result == ["Link", "Mario", "Lucas", "Lucario", "Ness"]
+
+
+def test_get_characters_by_world(mock_backend):
+    # Create a sample filters_map dictionary
+    filters_map = {
+        "All": ["Mario", "Link", "Sonic"],
+        "Super Mario Bros.": ["Mario"],
+        "The Legend of Zelda": ["Link"],
+        "Sonic the Hedgehog": ["Sonic", "Luna"],
+    }
+    filters_map_str = json.dumps(
+        filters_map)  # Serialize the dictionary to a string
+
+    # Set up the mock backend to return the filters_map_str
+    filters_entity = MagicMock()
+    filters_entity.__getitem__.return_value = filters_map_str
+    mock_backend.client.query.return_value.fetch.return_value = [filters_entity]
+
+    # Test the get_characters_by_world function
+    result = mock_backend.get_characters_by_world("Super Mario Bros.")
+    assert result == ["Mario"]
+
+    result = mock_backend.get_characters_by_world("The Legend of Zelda")
+    assert result == ["Link"]
+
+    result = mock_backend.get_characters_by_world("Sonic the Hedgehog")
+    assert result == ["Sonic", "Luna"]
+
+    result = mock_backend.get_characters_by_world("Nonexistent World")
+    assert result == []
 
 
 # duda
