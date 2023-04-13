@@ -17,8 +17,15 @@
         <input type=file name=file>
         <label for="name">Character Name:</label><br>
         <input type=text name=char_name><br>
+
         <label for="world">Character World:</label>
-        <input type="text" name="world" required><br>
+        <select name="world" id="world" required>
+            {% for world in worlds %}
+                <option value="{{ world }}">{{ world }}</option>
+            {% endfor %}
+        </select>
+        <br>        
+
         <label for="info">Character Info:</label><br>
         <input type=text name=info><br>
         <input type=submit value=Upload>
