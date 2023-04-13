@@ -113,4 +113,4 @@ class Tracker:
             else:
                 new_page_upvote = datastore.Entity(key=page_key)
                 new_page_upvote.update({"upvotes" : [username]})
-                trans.put(page)
+                trans.put(new_page_upvote)
