@@ -112,7 +112,7 @@ class Tracker:
                 trans.put(page)
             else:
                 new_page_upvote = datastore.Entity(key=page_key)
-                new_page_upvote.update({"upvotes" : [username]})
+                new_page_upvote.update({"upvotes": [username]})
                 trans.put(new_page_upvote)
 
     def get_upvotes(self, pagename: str) -> int:
