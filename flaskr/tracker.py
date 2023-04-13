@@ -23,9 +23,7 @@ class Tracker:
         self.client = client
         self.key = key_method
 
-    def add_upload(self,
-                   username: str,
-                   pagename: str) -> None:
+    def add_upload(self, username: str, pagename: str) -> None:
         """
         Keeps track of which user uploaded which pages, and the uploader
         for each page.
@@ -148,21 +146,38 @@ class Tracker:
                 String containing the name of uploaded page.
             comment:
                 String containing a user's comment.                 
-        """        
+        """
         with self.client.transaction() as trans:
             page_key = self.key("PageComment", pagename)
             page = self.client.get(page_key)
             if page:  # If page has been commented before.
-                page_comments = json.loads(str(page["comments"]).replace("\'", "\""))  # Converts database text to Python dictionary.
-                comment_num = str(len(page_comments))  # Define the number of the comment as a string.
-                page_comments[comment_num] = {username: comment.replace("'", "`").replace('"', "``")}  # Add comment to the page.
-                page["comments"] = str(page_comments)  # Cast the dictionary back to string.
+                page_comments = json.loads(
+                    str(page["comments"]).replace(
+                        "\'",
+                        "\""))  # Converts database text to Python dictionary.
+                comment_num = str(
+                    len(page_comments
+                       ))  # Define the number of the comment as a string.
+                page_comments[comment_num] = {
+                    username: comment.replace("'", "`").replace('"', "``")
+                }  # Add comment to the page.
+                page["comments"] = str(
+                    page_comments)  # Cast the dictionary back to string.
                 trans.put(page)
             else:  # Page is receiving its first comment.
                 new_page_comment = datastore.Entity(key=page_key)
-                new_page_comment.update({"comments": str({"0": {username: comment.replace("'", "`").replace('"', "``")}})})
+                new_page_comment.update({
+                    "comments":
+                        str({
+                            "0": {
+                                username:
+                                    comment.replace("'",
+                                                    "`").replace('"', "``")
+                            }
+                        })
+                })
                 trans.put(new_page_comment)
-        
+
     def get_comments(self, pagename: str):
         """
         Get all comments left on page with parameter pagename.
@@ -179,4 +194,5 @@ class Tracker:
         """
         page_key = self.key("PageComment", pagename)
         page = self.client.get(page_key)
-        return json.loads(str(page["comments"]).replace("\'", "\"")) if page else None                    
+        return json.loads(str(page["comments"]).replace("\'",
+                                                        "\"")) if page else None
