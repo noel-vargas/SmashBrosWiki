@@ -114,3 +114,19 @@ class Tracker:
                 new_page_upvote = datastore.Entity(key=page_key)
                 new_page_upvote.update({"upvotes" : [username]})
                 trans.put(new_page_upvote)
+
+    def get_upvotes(self, pagename: str) -> int:
+        """
+        Get number of upvotes for page with parameter pagename.
+        
+        ---
+        Args:
+            pagename:
+                String containing the name of a wiki page.
+
+        Returns:
+            Integer representing number of upvotes.
+        """
+        page_key = self.key("Upvote", pagename)
+        page = self.client.get(page_key)
+        return len(page["upvotes"]) if page else 0

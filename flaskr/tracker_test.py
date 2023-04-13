@@ -66,3 +66,29 @@ def test_get_pages_uploaded(mock_tracker):
 
     result = mock_tracker.get_pages_uploaded("Noel")
     assert result is None
+
+
+# def test_upvote_page(mock_tracker):
+#     def get_side_effect(key):
+#         if key.name == "Ness":
+#             return {"upvotes" : ["sebagabs"]}
+#     mock_tracker.client.transaction.side_effect = get_side_effect
+
+#     result = mock_tracker.upvote_page(pagname, username)
+#     assert result == ""
+
+
+def test_get_upvotes(mock_tracker):
+    # Configure the tracker . . . TODO
+    def get_side_effect(key):
+        if key.name == "Ryu":
+            return {"upvotes": ["sebagabs", "Noel"]}
+        return None
+
+    mock_tracker.client.get.side_effect = get_side_effect
+
+    result = mock_tracker.get_upvotes("Ryu")
+    assert result == 2
+
+    result = mock_tracker.get_upvotes("Lucario")
+    assert result == 0
