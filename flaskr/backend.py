@@ -223,3 +223,13 @@ class Backend:
             ) or lowcase_q in description.lower() or lowcase_q in world.lower():
                 matching_names.append(page_name)
         return matching_names
+
+    def rank_pages(self, matching_names: list[str]) -> list[str]:
+
+        ordered_names = list()
+        for page_name in matching_names:
+            ordered_names.append(
+                (page_name, self.tracker.get_upvotes(page_name)))
+        ordered_names.sort(key=lambda i: i[1], reverse=True)
+
+        return [ranked_pages[0] for ranked_pages in ordered_names]

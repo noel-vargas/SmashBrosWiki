@@ -123,6 +123,18 @@ def test_get_query_pages(mock_backend):
     assert result == ["Mario"]
 
 
+def test_rank_pages(mock_backend):
+    mock_backend.tracker.get_upvotes.side_effect = [2, 8, 5, 7, 10]
+    result = mock_backend.rank_pages(
+        ["Lucario", "Mario", "Link", "Ness", "Lucas"])
+    assert result == ["Lucas", "Mario", "Ness", "Link", "Lucario"]
+
+    mock_backend.tracker.get_upvotes.side_effect = [5, 8, 10, 2, 7]
+    result = mock_backend.rank_pages(
+        ["Lucario", "Mario", "Link", "Ness", "Lucas"])
+    assert result == ["Link", "Mario", "Lucas", "Lucario", "Ness"]
+
+
 # duda
 def test_get_image(mock_backend):
     # Prepare the test image data

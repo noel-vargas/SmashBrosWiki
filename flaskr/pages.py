@@ -64,6 +64,7 @@ def make_endpoints(app, backend):
                 flash("Please enter text in the Search Bar")
             else:
                 matching_names = backend.get_query_pages(query)
+                matching_names = backend.rank_pages(matching_names)
             # TODO F3R6 - Redirect to Results
             return render_template("main.html",
                                    query=query,
