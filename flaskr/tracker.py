@@ -104,16 +104,18 @@ class Tracker:
             username:
                 String representing username of a user.
         """
-        action = ""        
+        action = ""
         with self.client.transaction() as trans:
             page_key = self.key("Upvote", pagename)
             page = self.client.get(page_key)
             if page:
                 if username in page["upvotes"]:  # If user already voted.
-                    page["upvotes"].remove(username)  # Remove upvote done by user.
-                    action = "You had already upvoted this page. Removed upvote from page." 
+                    page["upvotes"].remove(
+                        username)  # Remove upvote done by user.
+                    action = "You had already upvoted this page. Removed upvote from page."
                 else:
-                    page["upvotes"].append(username)  # If user hasn't voted, add upvote to page.
+                    page["upvotes"].append(
+                        username)  # If user hasn't voted, add upvote to page.
                     action = "Page upvoted!"
                 trans.put(page)
             else:

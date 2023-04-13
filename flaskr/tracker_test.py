@@ -69,14 +69,15 @@ def test_get_pages_uploaded(mock_tracker):
 
 
 def test_upvote_page(mock_tracker):
+
     def get_side_effect(key):
         if key.name == "Ness":
-            return {"upvotes" : ["sebagabs"]}
-    
+            return {"upvotes": ["sebagabs"]}
+
     mock_tracker.client.get.side_effect = get_side_effect
 
     result = mock_tracker.upvote_page("Ness", "sebagabs")
-    assert result == "You had already upvoted this page. Removed upvote from page." 
+    assert result == "You had already upvoted this page. Removed upvote from page."
 
     result = mock_tracker.upvote_page("Ness", "Noel")
     assert result == "Page upvoted!"
