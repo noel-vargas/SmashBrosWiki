@@ -244,3 +244,13 @@ class Backend:
                 filters_map_str)  # Deserialize the string to a dictionary
             return filters_map.get(world, [])
         return []
+
+    def get_worlds(self) -> list[str]:
+        query = self.client.query(kind='Filters')
+        results = list(query.fetch())
+        if results:
+            filters_map_str = results[0]['FiltersMap']
+            filters_map = json.loads(filters_map_str)  # Deserialize the string to a dictionary
+            return list(filters_map.keys())
+        return []
+
