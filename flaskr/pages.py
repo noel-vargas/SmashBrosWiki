@@ -88,12 +88,19 @@ def make_endpoints(app, backend):
         character_name, description, world, = page_content.split('|', 3)
         page_image = backend.get_image("character-images/", page_name)
         if request.method == "POST":
-            if user.active:
-                action = backend.tracker.upvote_page(character_name,
-                                                     user.get_id())
-                flash(action)
-            else:
-                flash("You need to be logged in to upvote a page.")
+            if not request.form.get("comment"):  # If upvote button was clicked.
+                if user.active:
+                    action = backend.tracker.upvote_page(character_name,
+                                                        user.get_id())
+                    flash(action)
+                else:
+                    flash("You need to be logged in to upvote a page.")
+            else:  # If comment button was clicked.
+                if user.active:
+                    backend.tracker.add_comment(character_name, user.get_id(), request.form["comment"])
+                    flash("Comment posted successfully!")
+                else:
+                    flash("You need to be logged in to leave a comment.")
         return render_template("page.html",
                                character_name=character_name,
                                description=description,
