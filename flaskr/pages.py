@@ -54,13 +54,21 @@ def make_endpoints(app, backend):
     def load_user(username):
         return user
 
-    @app.route('/')
-    @app.route("/home")
+    @app.route('/', methods = ["GET","POST"])
+    @app.route("/home", methods = ["GET","POST"])
     def home():
         """Renders the home/landing page when the page is accessed."""
+        if request.method == 'POST':
+            query = request.form.get('query')
+            return render_template("main.html",
+                        query = query,
+                        active=user.active,
+                        name=user.get_id())
+                        
         return render_template("main.html",
                                active=user.active,
                                name=user.get_id())
+
 
     @app.route("/about")
     def about():

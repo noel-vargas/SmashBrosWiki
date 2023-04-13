@@ -28,6 +28,12 @@ def test_home_page(client):
     assert b"Welcome" in resp.data
     assert b"Welcome" in resp_home.data
 
+def test_search(client):
+    resp = client.post("/", data={"query": "example"})
+    assert resp.status_code == 200
+    assert b"example" in resp.data
+    assert b"Mario" not in  resp.data
+
 
 # TODO(Project 1): Write tests for other routes.
 
