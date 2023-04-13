@@ -105,6 +105,24 @@ def test_sign_in(mock_backend):
     assert result == -1
 
 
+def test_get_query_pages(mock_backend):
+    mock_backend.get_all_page_names = MagicMock(return_value=["Mario", "Link"])
+    mock_backend.get_wiki_page = MagicMock()
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("Link")
+    assert result == ["Link"]
+
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("Mario")
+    assert result == ["Mario"]
+
+
 # duda
 def test_get_image(mock_backend):
     # Prepare the test image data

@@ -202,3 +202,24 @@ class Backend:
             encoded_image_data = base64.b64encode(image_data).decode("utf-8")
             authors_list.append(encoded_image_data)
         return authors_list
+
+    def get_query_pages(self, query: str) -> list[str]:
+        """
+        Get pages that matches a given string query.
+
+        Args:
+            query: an input string typed by the user
+
+        Returns:
+            A list of strings representing the pages that match with the query.
+        """
+        name_list = self.get_all_page_names()
+        matching_names = list()
+        for page_name in name_list:
+            page_content = self.get_wiki_page(page_name)
+            character_name, description, world = page_content.split('|', 3)
+            lowcase_q = query.lower()
+            if lowcase_q in character_name.lower(
+            ) or lowcase_q in description.lower() or lowcase_q in world.lower():
+                matching_names.append(page_name)
+        return matching_names

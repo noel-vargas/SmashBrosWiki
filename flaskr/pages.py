@@ -60,6 +60,11 @@ def make_endpoints(app, backend):
         """Renders the home/landing page when the page is accessed."""
         if request.method == 'POST':
             query = request.form.get('query')
+            if query == "":
+                flash("Please enter text in the Search Bar")
+            else:
+                matching_names = backend.get_query_pages(query)
+            # TODO F3R6 - Redirect to Results
             return render_template("main.html",
                                    query=query,
                                    active=user.active,

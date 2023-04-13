@@ -4,6 +4,11 @@
 
 
 {% block body %}
+{% for message in get_flashed_messages() %}
+            <div class="alert alert-warning" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
 <!-- Search Bar -->
 <form method="POST">
     <input type="text" name="query" placeholder="Search...">
