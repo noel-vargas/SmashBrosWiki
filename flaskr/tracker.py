@@ -179,8 +179,4 @@ class Tracker:
         """
         page_key = self.key("PageComment", pagename)
         page = self.client.get(page_key)
-        result = None
-        if page:
-            result = json.loads(str(page["comments"]).replace("\'", "\""))
-        return result
-        # return json.loads(str(page["comments"]).replace("\'", "\"")) if page else None                    
+        return json.loads(str(page["comments"]).replace("\'", "\"")) if page else None                    
