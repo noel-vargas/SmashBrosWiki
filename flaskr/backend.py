@@ -205,7 +205,10 @@ class Backend:
 
     def get_query_pages(self, query: str) -> list[str]:
         """
-        Get pages that matches a given string query.
+        Get pages that matches a given string query. 
+        
+        Query Injection attacks are prevented. The information is
+        retrieved from the database and then it is compared with the query.
 
         Args:
             query: an input string typed by the user
