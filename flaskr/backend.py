@@ -94,7 +94,8 @@ class Backend:
 
     def upload(self, f, char_name, char_info, char_world):
         # Save the image to the GCS bucket
-        image_blob = self.content_bucket.blob("character-images/" + char_name + ".png")
+        image_blob = self.content_bucket.blob("character-images/" + char_name +
+                                              ".png")
         image_blob.upload_from_file(f, content_type=f.content_type)
 
         # Save the character info to the Datastore
@@ -113,7 +114,8 @@ class Backend:
         if results:
             filters_entity = results[0]
             filters_map_str = filters_entity['FiltersMap']
-            filters_map = json.loads(filters_map_str)  # Deserialize the string to a dictionary
+            filters_map = json.loads(
+                filters_map_str)  # Deserialize the string to a dictionary
 
             # Add character to the "All" list and its corresponding world
             filters_map["All"].append(char_name)
@@ -123,7 +125,8 @@ class Backend:
                 filters_map[char_world] = [char_name]
 
             # Save the updated FiltersMap back to the Datastore
-            filters_map_str = json.dumps(filters_map)  # Serialize the dictionary to a string
+            filters_map_str = json.dumps(
+                filters_map)  # Serialize the dictionary to a string
             filters_entity.update({'FiltersMap': filters_map_str})
             self.client.put(filters_entity)
 
@@ -260,7 +263,7 @@ class Backend:
         results = list(query.fetch())
         if results:
             filters_map_str = results[0]['FiltersMap']
-            filters_map = json.loads(filters_map_str)  # Deserialize the string to a dictionary
+            filters_map = json.loads(
+                filters_map_str)  # Deserialize the string to a dictionary
             return list(filters_map.keys())
         return []
-

@@ -88,16 +88,15 @@ def make_endpoints(app, backend):
     @app.route("/pages")
     def pages():
         """Renders the page index for wiki pages."""
-        selected_world = request.args.get("world", "All") 
+        selected_world = request.args.get("world", "All")
         name_list = backend.get_characters_by_world(selected_world)
         worlds = backend.get_worlds()
         return render_template("pages.html",
-                                name_list=name_list,
-                                worlds=worlds,
-                                selected_world=selected_world,
-                                active=user.active,
-                                name=user.get_id())
-
+                               name_list=name_list,
+                               worlds=worlds,
+                               selected_world=selected_world,
+                               active=user.active,
+                               name=user.get_id())
 
     @app.route("/pages/<page_name>", methods=["GET", "POST"])
     def show_character_info(page_name):
@@ -195,6 +194,6 @@ def make_endpoints(app, backend):
                 backend.upload(file, name, info, world)
         worlds = backend.get_worlds()
         return render_template("upload.html",
-                                worlds = worlds,
+                               worlds=worlds,
                                active=user.active,
                                name=user.get_id())
