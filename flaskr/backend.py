@@ -92,18 +92,9 @@ class Backend:
 
     # I changed this method's parameters!! added path and name
 
-    def upload(self, uploader, f, char_name, char_info, char_world):
-        """Uploads an image and character info to the GCS bucket and Datastore.
-
-            Args:
-            f: A file object representing the image to be uploaded.
-            char_name: A string representing the name of the character.
-            char_info: A string representing the info of the character.
-            char_world: A string representing the world of the character.
-        """
+    def upload(self, f, char_name, char_info, char_world):
         # Save the image to the GCS bucket
-        image_blob = self.content_bucket.blob("character-images/" + char_name +
-                                              ".png")
+        image_blob = self.content_bucket.blob("character-images/" + char_name + ".png")
         image_blob.upload_from_file(f, content_type=f.content_type)
 
         # Save the character info to the Datastore
@@ -115,7 +106,26 @@ class Backend:
             'World': char_world,
         })
         self.client.put(wiki_page)
-        self.tracker.add_upload(username=uploader, pagename=char_name)
+
+        # Update the FiltersMap in the Datastore
+        query = self.client.query(kind='Filters')
+        results = list(query.fetch())
+        if results:
+            filters_entity = results[0]
+            filters_map_str = filters_entity['FiltersMap']
+            filters_map = json.loads(filters_map_str)  # Deserialize the string to a dictionary
+
+            # Add character to the "All" list and its corresponding world
+            filters_map["All"].append(char_name)
+            if char_world in filters_map:
+                filters_map[char_world].append(char_name)
+            else:
+                filters_map[char_world] = [char_name]
+
+            # Save the updated FiltersMap back to the Datastore
+            filters_map_str = json.dumps(filters_map)  # Serialize the dictionary to a string
+            filters_entity.update({'FiltersMap': filters_map_str})
+            self.client.put(filters_entity)
 
     def sign_up(self, new_user_name: str, new_password: str) -> bool:
         """Registers a new user with a username and password.

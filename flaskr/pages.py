@@ -192,9 +192,9 @@ def make_endpoints(app, backend):
                 checker = False
                 flash('Incorrect File Type')
             if checker:
-                backend.upload(user.get_id(), file, name, info, world)
+                backend.upload(file, name, info, world)
         worlds = backend.get_worlds()
         return render_template("upload.html",
+                                worlds = worlds,
                                active=user.active,
-                               worlds=worlds,
                                name=user.get_id())
