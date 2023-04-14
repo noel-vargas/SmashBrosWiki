@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block head %} <title>Search Results</title> {% endblock %}
+
+{% block body %}
+
+    <!-- Search Bar -->
+    <form method="POST">
+        <input type="text" name="query" placeholder="Search..." maxlength="128">
+        <input type="submit" value="Search">
+    </form>
+
+    <h3>Results that match for "{{ query }}":</h3>
+
+    <ul>
+        {% for page_name in matching_names %}
+            {% if page_name %}
+            <li><a href="/pages/{{ page_name }}">{{ page_name }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+
+{% endblock %}
