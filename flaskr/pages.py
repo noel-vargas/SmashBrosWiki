@@ -65,11 +65,11 @@ def make_endpoints(app, backend):
             else:
                 matching_names = backend.get_query_pages(query)
                 matching_names = backend.rank_pages(matching_names)
-            # TODO F3R6 - Redirect to Results
-            return render_template("main.html",
+            return render_template("results.html",
                                    query=query,
                                    active=user.active,
-                                   name=user.get_id())
+                                   name=user.get_id(),
+                                   matching_names=matching_names)
 
         return render_template("main.html",
                                active=user.active,
