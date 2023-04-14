@@ -1,4 +1,5 @@
 from flaskr import create_app
+import os
 
 import pytest
 
@@ -73,3 +74,4 @@ def test_users_page(client):
     resp = client.get("/users")
     assert resp.status_code == 200
     assert b"Users" in resp.data
+

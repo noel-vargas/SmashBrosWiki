@@ -3,8 +3,9 @@ from flask_login import LoginManager, login_required, login_user, current_user, 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FileField, TextAreaField
 from wtforms.validators import InputRequired
+from .tracker import Tracker
 
-
+tracker = Tracker()
 class SignupForm(FlaskForm):
     """Generates form and stores form data for signing up process."""
     username = StringField(validators=[InputRequired()],
@@ -43,7 +44,7 @@ class User():
 user = User(None)  # /login will update this with current user in session.
 
 
-def make_endpoints(app, backend, tracker):
+def make_endpoints(app, backend):
 
     # Initiates login_manager for session handling.
     login_manager = LoginManager()

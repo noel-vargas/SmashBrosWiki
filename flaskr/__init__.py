@@ -25,7 +25,6 @@ def create_app(test_config=None):
         # This file is not committed. Place it in production deployments.
         app.config.from_pyfile('config.py', silent=True)
         backend = Backend(tracker=Tracker())
-        tracker = Tracker()
     else:
         # Load the test config if passed in.
         mock_tracker = Tracker(MagicMock(), MagicMock())
@@ -34,6 +33,5 @@ def create_app(test_config=None):
 
     # TODO(Project 1): Make additional modifications here for logging in, backends
     # and additional endpoints.
-
-    pages.make_endpoints(app, backend, tracker)
+    pages.make_endpoints(app, backend)
     return app
