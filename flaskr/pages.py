@@ -6,6 +6,8 @@ from wtforms.validators import InputRequired
 from .tracker import Tracker
 
 tracker = Tracker()
+
+
 class SignupForm(FlaskForm):
     """Generates form and stores form data for signing up process."""
     username = StringField(validators=[InputRequired()],
@@ -202,7 +204,6 @@ def make_endpoints(app, backend):
         users_list = backend.get_all_usernames()
         return render_template('users.html', users=users_list)
 
-
     @app.route('/users/<username>')
     def user_contributions(username):
         comments = {}
@@ -220,6 +221,8 @@ def make_endpoints(app, backend):
             for pagename in uploaded_pages:
                 total_upvotes += backend.tracker.get_upvotes(pagename)
 
-        return render_template('contributions.html', username=username, uploaded_pages=uploaded_pages, comments=comments, total_upvotes=total_upvotes)
-
-
+        return render_template('contributions.html',
+                               username=username,
+                               uploaded_pages=uploaded_pages,
+                               comments=comments,
+                               total_upvotes=total_upvotes)

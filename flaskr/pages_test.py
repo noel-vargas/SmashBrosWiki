@@ -70,8 +70,8 @@ def test_upload_page(client):
     assert resp.status_code == 302
     assert b"Redirecting" in resp.data
 
+
 def test_users_page(client):
     resp = client.get("/users")
     assert resp.status_code == 200
     assert b"Users" in resp.data
-
