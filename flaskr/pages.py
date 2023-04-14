@@ -43,7 +43,7 @@ class User():
 user = User(None)  # /login will update this with current user in session.
 
 
-def make_endpoints(app, backend):
+def make_endpoints(app, backend, tracker):
 
     # Initiates login_manager for session handling.
     login_manager = LoginManager()
@@ -87,6 +87,9 @@ def make_endpoints(app, backend):
         page_content = backend.get_wiki_page(page_name)
         character_name, description, world, = page_content.split('|', 3)
         page_image = backend.get_image("character-images/", page_name)
+        uploader = tracker.get_page_uploader(page_name)
+        comments = tracker.get_comments(page_name)
+        upvotes = tracker.get_upvotes(page_name)
         if request.method == "POST":
             if not request.form.get("comment"):  # If upvote button was clicked.
                 if user.active:
@@ -105,6 +108,9 @@ def make_endpoints(app, backend):
         return render_template("page.html",
                                character_name=character_name,
                                description=description,
+                               comments=comments,
+                               upvotes=upvotes,
+                               uploader=uploader,
                                page_image=page_image,
                                world=world,
                                active=user.active,
@@ -188,3 +194,31 @@ def make_endpoints(app, backend):
         return render_template("upload.html",
                                active=user.active,
                                name=user.get_id())
+
+    @app.route('/users')
+    def users():
+        # Retrieve the list of users here
+        users_list = backend.get_all_usernames()
+        return render_template('users.html', users=users_list)
+
+
+    @app.route('/users/<username>')
+    def user_contributions(username):
+        comments = {}
+        uploaded_pages = backend.tracker.get_pages_uploaded(username)
+        if uploaded_pages:
+            for pagename in uploaded_pages:
+                page_comments = backend.tracker.get_comments(pagename)
+                if page_comments:
+                    for comment_id, comment_data in page_comments.items():
+                        if username in comment_data:
+                            comments[pagename] = comment_data[username]
+
+        total_upvotes = 0
+        if uploaded_pages:
+            for pagename in uploaded_pages:
+                total_upvotes += backend.tracker.get_upvotes(pagename)
+
+        return render_template('contributions.html', username=username, uploaded_pages=uploaded_pages, comments=comments, total_upvotes=total_upvotes)
+
+

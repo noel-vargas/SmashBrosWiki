@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block head %} <title>Users</title> {% endblock %}
+
+{% block body %}
+    <!-- Do whatever you want here, I'm guessing you wanted a users.html template -->
+    {% for user in users %}
+        {% if user %}
+            <li><a href="{{ url_for('user_contributions', username=user) }}">{{ user }}</a></li>
+        {% endif %}
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %} <title>{{ username }}'s Contributions</title> {% endblock %}
+
+{% block body %}
+    <h1>{{ username }}'s Contributions</h1>
+    <h3>Pages Uploaded:</h3>
+    <ul>
+        {% for page in uploaded_pages %}
+            <li><a href="/pages/{{ page }}">{{ page }}</a></li>
+        {% endfor %}
+    </ul>
+    <h3>Comments</h3>
+    {% if comments %}
+        {% for page, comment in comments.items() %}
+            <p>{{ page }}: {{ comment }}</p>
+        {% endfor %}
+    {% else %}
+        <p>No comments found.</p>
+    {% endif %}
+    <h3>Total Upvotes: {{ total_upvotes }}</h3>
+{% endblock %}
