@@ -147,6 +147,8 @@ class Tracker:
             comment:
                 String containing a user's comment.                 
         """
+        if not pagename:
+            return
         with self.client.transaction() as trans:
             page_key = self.key("PageComment", pagename)
             page = self.client.get(page_key)
