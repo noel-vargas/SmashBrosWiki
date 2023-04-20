@@ -54,12 +54,29 @@ def test_get_all_page_names(mock_backend):
     assert result == ["Mario", "Link"]
 
 
+def test_get_all_usernames(mock_backend):
+    mock_user_1 = MagicMock()
+    mock_user_1.key.name = "sebagabs"
+    mock_user_2 = MagicMock()
+    mock_user_2.key.name = "Noel"
+    mock_user_3 = MagicMock()
+    mock_user_3.key.name = "Bryan"
+
+    mock_backend.client.query.return_value.fetch.return_value = [
+        mock_user_1, mock_user_2, mock_user_3
+    ]
+
+    result = mock_backend.get_all_page_names()
+    assert result == ["sebagabs", "Noel", "Bryan"]
+
+
 def test_upload(mock_backend):
     mock_backend.content_bucket.blob.return_value = MagicMock(
         upload_from_file=MagicMock())
 
     f = MagicMock(content_type='image/png', tell=MagicMock(return_value=0))
-    mock_backend.upload(f, 'Mario', 'A character from the Mario series.',
+    mock_backend.upload("tester", f, 'Mario',
+                        'A character from the Mario series.',
                         'Mushroom Kingdom')
 
     mock_backend.content_bucket.blob.assert_called_with(
