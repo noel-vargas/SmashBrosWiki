@@ -5,7 +5,8 @@ from unittest.mock import MagicMock
 class Tracker:
     """
     Interface to manage tracking of different user contribution and interaction
-    metrics.
+    metrics through the database. Interacts with the Datastore instance of 
+    the wiki web page.
 
     ---
     Attributes:
