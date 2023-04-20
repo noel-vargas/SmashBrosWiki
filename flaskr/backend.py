@@ -25,7 +25,6 @@ class Backend:
     """
 
     def __init__(self,
-                 tracker,
                  client=None,
                  content_bucket=None,
                  users_bucket=None,
@@ -47,7 +46,6 @@ class Backend:
         self.content_bucket = content_bucket
         self.users_bucket = users_bucket
         self.key = key_method
-        self.tracker = tracker
 
     def get_wiki_page(self, name: str) -> str:
         """Get a wiki page from the Datastore by name.
@@ -78,20 +76,9 @@ class Backend:
         results = list(query.fetch())
         return [entity.key.name for entity in results]
 
-    def get_all_usernames(self) -> list[str]:
-        """Get a list of all usernames from the Datastore.
-        
-        ---
-        Returns:
-            A list of strings representing all the usernames.
-        """
-        query = self.client.query(kind='User')
-        results = list(query.fetch())
-        return [entity.key.name for entity in results]
-
     # I changed this method's parameters!! added path and name
 
-    def upload(self, uploader, f, char_name, char_info, char_world):
+    def upload(self, f, char_name, char_info, char_world):
         """Uploads an image and character info to the GCS bucket and Datastore.
 
             Args:
@@ -114,7 +101,6 @@ class Backend:
             'World': char_world,
         })
         self.client.put(wiki_page)
-        self.tracker.add_upload(username=uploader, pagename=char_name)
 
     def sign_up(self, new_user_name: str, new_password: str) -> bool:
         """Registers a new user with a username and password.
