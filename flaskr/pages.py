@@ -178,7 +178,7 @@ def make_endpoints(app, backend):
         return render_template("upload.html",
                                active=user.active,
                                name=user.get_id())
-    
+
     @app.route("/search", methods=["GET", "POST"])
     def search_results():
         """Renders the search results when a user inputs a query."""
@@ -195,8 +195,9 @@ def make_endpoints(app, backend):
                                    name=user.get_id(),
                                    matching_names=matching_names)
         else:
-            return render_template("results.html",
-                                   query="",  # Placeholder value
-                                   active=user.active,
-                                   name=user.get_id(),
-                                   matching_names=[None])  # Placeholder value
+            return render_template(
+                "results.html",
+                query="",  # Placeholder value
+                active=user.active,
+                name=user.get_id(),
+                matching_names=[None])  # Placeholder value
