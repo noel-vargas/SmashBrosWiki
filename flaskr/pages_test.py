@@ -30,7 +30,7 @@ def test_home_page(client):
 
 
 def test_search(client):
-    resp = client.post("/", data={"query": "example"})
+    resp = client.post("/search", data={"search_query": "example"})
     assert resp.status_code == 200
     assert b"example" in resp.data
     assert b"Mario" not in resp.data

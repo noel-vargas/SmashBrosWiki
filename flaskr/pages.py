@@ -54,18 +54,20 @@ def make_endpoints(app, backend):
     def load_user(username):
         return user
 
-    @app.route('/', methods=["GET", "POST"])
-    @app.route("/home", methods=["GET", "POST"])
+    @app.route('/', methods=["GET"])
+    @app.route("/home", methods=["GET"])
     def home():
         """Renders the home/landing page when the page is accessed."""
-        if request.method == 'POST':
-            query = request.form.get('query')
-            return render_template("main.html",
-                                   query=query,
-                                   active=user.active,
-                                   name=user.get_id())
-
         return render_template("main.html",
+                               active=user.active,
+                               name=user.get_id())
+
+    @app.route('/search', methods=["POST"])
+    def search():
+        """Handles search queries submitted from the home page."""
+        search_query = request.form.get('search_query')
+        return render_template("main.html",
+                               search_query=search_query,
                                active=user.active,
                                name=user.get_id())
 
