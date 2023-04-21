@@ -36,7 +36,7 @@ class Tracker:
                 String containing the name of uploaded page.
         """
         with self.client.transaction() as trans:
-            # Add page to `uploads` array of `username` in UserUploads.
+            # Add a page to the 'uploads' array of a specific 'username' in the UserUploads kind of database.
             user_key = self.key("UserUploads", username)
             user_uploads = self.client.get(user_key)
             if user_uploads:  # If user has uploaded pages previosly.
@@ -47,7 +47,7 @@ class Tracker:
                 new_user_upload.update({"uploads": [pagename]})
                 trans.put(new_user_upload)
 
-            # Add username to page uploader in PageUploader.
+            # Add user's username as the 'uploader' field of a page's entity in the PageUploader kind of database.
             page_key = self.key("PageUploader", pagename)
             new_page_upload = datastore.Entity(key=page_key)
             new_page_upload.update({"uploader": username})
@@ -156,15 +156,15 @@ class Tracker:
                 page_comments = json.loads(
                     str(page["comments"]).replace(
                         "\'",
-                        "\""))  # Converts database text to Python dictionary.
+                        "\""))
                 comment_num = str(
                     len(page_comments
-                       ))  # Define the number of the comment as a string.
+                       ))
                 page_comments[comment_num] = {
-                    username: comment.replace("'", "`").replace('"', "``")
-                }  # Add comment to the page.
+                    username: comment.replace("'", "`").replace('"', "``")  # Characters are being replaced to avoid issues when casting between JSON/string/dictionary.
+                } 
                 page["comments"] = str(
-                    page_comments)  # Cast the dictionary back to string.
+                    page_comments) 
                 trans.put(page)
             else:  # Page is receiving its first comment.
                 new_page_comment = datastore.Entity(key=page_key)
@@ -174,7 +174,7 @@ class Tracker:
                             "0": {
                                 username:
                                     comment.replace("'",
-                                                    "`").replace('"', "``")
+                                                    "`").replace('"', "``")  # Characters are being replaced to avoid issues when casting between JSON/string/dictionary.
                             }
                         })
                 })
@@ -196,5 +196,5 @@ class Tracker:
         """
         page_key = self.key("PageComment", pagename)
         page = self.client.get(page_key)
-        return json.loads(str(page["comments"]).replace("\'",
+        return json.loads(str(page["comments"]).replace("\'",  # Characters are being replaced to avoid issues when casting between JSON/string/dictionary.
                                                         "\"")) if page else None
