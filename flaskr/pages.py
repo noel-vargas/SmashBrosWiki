@@ -169,7 +169,7 @@ def make_endpoints(app, backend):
                 checker = False
                 flash('Incorrect File Type')
             if checker:
-                backend.upload(file, name, info, world)
+                backend.upload(user.get_id(), file, name, info, world)
         return render_template("upload.html",
                                active=user.active,
                                name=user.get_id())
