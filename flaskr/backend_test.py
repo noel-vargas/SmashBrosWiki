@@ -161,8 +161,12 @@ def test_get_worlds(mock_backend):
     ]
     assert result == expected_result
 
-    # Test the get_worlds function when no worlds exist
+
+def test_get_worlds_no_worlds(mock_backend):
+    # Set up the mock backend to return an empty list
     mock_backend.client.query.return_value.fetch.return_value = []
+
+    # Test the get_worlds function when no worlds exist
     result = mock_backend.get_worlds()
     assert result == []
 
