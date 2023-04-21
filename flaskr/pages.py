@@ -3,9 +3,6 @@ from flask_login import LoginManager, login_required, login_user, current_user, 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, FileField, TextAreaField
 from wtforms.validators import InputRequired
-from .tracker import Tracker
-
-tracker = Tracker()
 
 
 class SignupForm(FlaskForm):
@@ -90,9 +87,9 @@ def make_endpoints(app, backend):
         page_content = backend.get_wiki_page(page_name)
         character_name, description, world, = page_content.split('|', 3)
         page_image = backend.get_image("character-images/", page_name)
-        uploader = tracker.get_page_uploader(page_name)
-        comments = tracker.get_comments(page_name)
-        upvotes = tracker.get_upvotes(page_name)
+        uploader = backend.tracker.get_page_uploader(page_name)
+        comments = backend.tracker.get_comments(page_name)
+        upvotes = backend.tracker.get_upvotes(page_name)
         if request.method == "POST":
             if not request.form.get("comment"):  # If upvote button was clicked.
                 if user.active:
@@ -206,21 +203,9 @@ def make_endpoints(app, backend):
 
     @app.route('/users/<username>')
     def user_contributions(username):
-        comments = {}
-        uploaded_pages = backend.tracker.get_pages_uploaded(username)
-        if uploaded_pages:
-            for pagename in uploaded_pages:
-                page_comments = backend.tracker.get_comments(pagename)
-                if page_comments:
-                    for comment_id, comment_data in page_comments.items():
-                        if username in comment_data:
-                            comments[pagename] = comment_data[username]
-
-        total_upvotes = 0
-        if uploaded_pages:
-            for pagename in uploaded_pages:
-                total_upvotes += backend.tracker.get_upvotes(pagename)
-
+        uploaded_pages = backend.get_uploaded_pages(username)
+        comments = backend.get_user_comments(username, uploaded_pages)
+        total_upvotes = backend.tracker.get_upvotes(username)
         return render_template('contributions.html',
                                username=username,
                                uploaded_pages=uploaded_pages,
