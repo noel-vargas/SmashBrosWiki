@@ -154,17 +154,15 @@ class Tracker:
             page = self.client.get(page_key)
             if page:  # If page has been commented before.
                 page_comments = json.loads(
-                    str(page["comments"]).replace(
-                        "\'",
-                        "\""))
-                comment_num = str(
-                    len(page_comments
-                       ))
+                    str(page["comments"]).replace("\'", "\""))
+                comment_num = str(len(page_comments))
                 page_comments[comment_num] = {
-                    username: comment.replace("'", "`").replace('"', "``")  # Characters are being replaced to avoid issues when casting between JSON/string/dictionary.
-                } 
-                page["comments"] = str(
-                    page_comments) 
+                    username:
+                        comment.replace("'", "`").replace(
+                            '"', "``"
+                        )  # Characters are being replaced to avoid issues when casting between JSON/string/dictionary.
+                }
+                page["comments"] = str(page_comments)
                 trans.put(page)
             else:  # Page is receiving its first comment.
                 new_page_comment = datastore.Entity(key=page_key)
@@ -173,8 +171,9 @@ class Tracker:
                         str({
                             "0": {
                                 username:
-                                    comment.replace("'",
-                                                    "`").replace('"', "``")  # Characters are being replaced to avoid issues when casting between JSON/string/dictionary.
+                                    comment.replace("'", "`").replace(
+                                        '"', "``"
+                                    )  # Characters are being replaced to avoid issues when casting between JSON/string/dictionary.
                             }
                         })
                 })
@@ -196,5 +195,7 @@ class Tracker:
         """
         page_key = self.key("PageComment", pagename)
         page = self.client.get(page_key)
-        return json.loads(str(page["comments"]).replace("\'",  # Characters are being replaced to avoid issues when casting between JSON/string/dictionary.
-                                                        "\"")) if page else None
+        return json.loads(
+            str(page["comments"]).replace(
+                "\'",  # Characters are being replaced to avoid issues when casting between JSON/string/dictionary.
+                "\"")) if page else None
