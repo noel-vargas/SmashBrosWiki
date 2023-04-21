@@ -13,14 +13,20 @@
         <input type="submit" value="Search">
     </form>
 
-    <h3>Results that match for "{{ query }}":</h3>
+    {% if matching_names|length %}
+        {% if matching_names[0] is not none %}
+            <h3>Results that match for "{{ query }}":</h3>
+        {% endif %}
+        <ul>
+            {% for page_name in matching_names %}
+                {% if page_name %}
+                    <li><a href="/pages/{{ page_name }}">{{ page_name }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h3>No matches found for for "{{ query }}".</h3>
+    {% endif %}
 
-    <ul>
-        {% for page_name in matching_names %}
-            {% if page_name %}
-            <li><a href="/pages/{{ page_name }}">{{ page_name }}</a></li>
-            {% endif %}
-        {% endfor %}
-    </ul>
 
 {% endblock %}

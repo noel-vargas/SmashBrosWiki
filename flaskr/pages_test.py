@@ -26,14 +26,16 @@ def test_home_page(client):
     assert resp_home.status_code == 200
     assert b"Welcome" in resp.data
     assert b"Welcome" in resp_home.data
-    resp = client.post("/")
-    assert b"Results" in resp.data
-    resp = client.post("/home")
-    assert b"Results" in resp.data
+
+
+def test_search_results(client):
+    resp = client.post("/search")
+    assert resp.status_code == 200
+    assert b"search_query" in resp.data
 
 
 def test_search(client):
-    resp = client.post("/", data={"query": "example"})
+    resp = client.post("/search", data={"search_query": "example"})
     assert resp.status_code == 200
     assert b"example" in resp.data
     assert b"Mario" not in resp.data

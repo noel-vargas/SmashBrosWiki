@@ -58,19 +58,6 @@ def make_endpoints(app, backend):
     @app.route("/home", methods=["GET", "POST"])
     def home():
         """Renders the home/landing page when the page is accessed."""
-        if request.method == 'POST':
-            query = request.form.get('query')
-            if query == "":
-                flash("Please enter text in the Search Bar")
-            else:
-                matching_names = backend.get_query_pages(query)
-                matching_names = backend.rank_pages(matching_names)
-            return render_template("results.html",
-                                   query=query,
-                                   active=user.active,
-                                   name=user.get_id(),
-                                   matching_names=matching_names)
-
         return render_template("main.html",
                                active=user.active,
                                name=user.get_id())
@@ -191,3 +178,25 @@ def make_endpoints(app, backend):
         return render_template("upload.html",
                                active=user.active,
                                name=user.get_id())
+    
+    @app.route("/search", methods=["GET", "POST"])
+    def search_results():
+        """Renders the search results when a user inputs a query."""
+        if request.method == 'POST':
+            query = request.form.get('search_query')
+            if query == "":
+                flash("Please enter text in the Search Bar")
+            else:
+                matching_names = backend.get_query_pages(query)
+                matching_names = backend.rank_pages(matching_names)
+            return render_template("results.html",
+                                   query=query,
+                                   active=user.active,
+                                   name=user.get_id(),
+                                   matching_names=matching_names)
+        else:
+            return render_template("results.html",
+                                   query="",  # Placeholder value
+                                   active=user.active,
+                                   name=user.get_id(),
+                                   matching_names=[None])  # Placeholder value
