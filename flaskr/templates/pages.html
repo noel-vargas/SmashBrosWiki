@@ -5,10 +5,14 @@
 
     <h3>Pages contained in this Wiki</h3>
     <select id="world-select" onchange="location = this.value;">
-        {% for world in worlds %}
-            <option value="{{ url_for('pages', world=world) }}" {% if world == selected_world %}selected{% endif %}>{{ world }}</option>
-        {% endfor %}
+    {% for world in worlds %}
+        <option value="{{ url_for('pages', world=world) }}" 
+                {% if world == selected_world %}selected{% endif %}>
+        {{ world }}
+        </option>
+    {% endfor %}
     </select>
+
     
     <div id="characters_list"></div>
     
