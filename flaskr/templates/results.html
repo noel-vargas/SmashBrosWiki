@@ -3,9 +3,13 @@
 
 {% block body %}
 
+    {# This page will serve to output the results that match the query a user inputs into
+    the search bar. These resuls will clickable links that link to the character pages
+    which name, content or world matches the text in the user search query. #}
+
     <!-- Search Bar -->
     <form method="POST">
-        <input type="text" name="query" placeholder="Search..." maxlength="128">
+        <input type="text" name="search_query" placeholder="Search..." maxlength="128">
         <input type="submit" value="Search">
     </form>
 
