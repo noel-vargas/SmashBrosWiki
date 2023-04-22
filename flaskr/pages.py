@@ -90,8 +90,6 @@ def make_endpoints(app, backend):
         if user.active:
             backend.tracker.add_comment(page_name, user.get_id(),
                                         request.form["comment"])
-            backend.tracker.add_comment(page_name, user.get_id(),
-                                        request.form["comment"])
             flash("Comment posted successfully!")
         else:
             flash("You need to be logged in to leave a comment.")
@@ -234,7 +232,10 @@ def make_endpoints(app, backend):
     def users():
         # Retrieve the list of users here
         users_list = backend.get_all_usernames()
-        return render_template('users.html', users=users_list)
+        return render_template('users.html',
+                               users=users_list,
+                               active=user.active,
+                               name=user.get_id())
 
     @app.route('/users/<username>')
     def user_contributions(username):
@@ -245,4 +246,6 @@ def make_endpoints(app, backend):
                                username=username,
                                uploaded_pages=uploaded_pages,
                                comments=comments,
-                               total_upvotes=total_upvotes)
+                               total_upvotes=total_upvotes,
+                               active=user.active,
+                               name=user.get_id())
