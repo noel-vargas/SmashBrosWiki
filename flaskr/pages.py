@@ -93,17 +93,23 @@ def make_endpoints(app, backend):
                                active=user.active,
                                name=user.get_id())
 
-    @app.route("/pages/<page_name>", methods=["GET", "POST"])
+
+    @app.route("/pages/<page_name>/upvote", methods=["GET", "POST"])
+    def upvoting_page(page_name):
+        if user.active:
+            backend.tracker.upvote_page(page_name, user.get_id())
+        else:
+            flash("You need to be logged in to upvote a page.")
+        return redirect(url_for("show_character_info", page_name=page_name))
+
+
+
+    @app.route("/pages/<page_name>")
     def show_character_info(page_name):
         """Renders specific (clicked) wiki page based on page_name."""
         page_content = backend.get_wiki_page(page_name)
         character_name, description, world, = page_content.split('|', 3)
         page_image = backend.get_image("character-images/", page_name)
-        if request.method == "POST":
-            if user.active:
-                backend.tracker.upvote_page(character_name, user.get_id())
-            else:
-                flash("You need to be logged in to upvote a page.")
         return render_template("page.html",
                                character_name=character_name,
                                description=description,
