@@ -1,7 +1,8 @@
 import pytest, hashlib, base64
 from werkzeug.security import generate_password_hash
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, Mock
 from .backend import Backend
+import json
 
 
 # Mocking Google Cloud Storage and Datastore client
@@ -105,6 +106,149 @@ def test_sign_in(mock_backend):
     assert result == -1
 
 
+def test_get_query_pages_name_search(mock_backend):
+    mock_backend.get_all_page_names = MagicMock(return_value=["Mario", "Link"])
+    mock_backend.get_wiki_page = MagicMock()
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("Link")
+    assert result == ["Link"]
+
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("Mario")
+    assert result == ["Mario"]
+
+
+def test_get_query_pages_content_search(mock_backend):
+    mock_backend.get_all_page_names = MagicMock(return_value=["Mario", "Link"])
+    mock_backend.get_wiki_page = MagicMock()
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("boomerang")
+    assert result == ["Link"]
+
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("Plumber")
+    assert result == ["Mario"]
+
+
+def test_get_query_pages_world_search(mock_backend):
+    mock_backend.get_all_page_names = MagicMock(return_value=["Mario", "Link"])
+    mock_backend.get_wiki_page = MagicMock()
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("La Leyenda de Zelda")
+    assert result == ["Link"]
+
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("Super Mario Bros.")
+    assert result == ["Mario"]
+
+
+def test_get_query_pages_empty_search(mock_backend):
+    mock_backend.get_all_page_names = MagicMock(return_value=["Mario", "Link"])
+    mock_backend.get_wiki_page = MagicMock()
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("")
+    assert result == ["Mario", "Link"]
+
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages(None)
+    assert result == ["Mario", "Link"]
+
+
+def test_rank_pages(mock_backend):
+    # Number of upvotes of each page in the corresponding order
+    mock_backend.tracker.get_upvotes.side_effect = [2, 8, 5, 7, 10]
+    result = mock_backend.rank_pages(
+        ["Lucario", "Mario", "Link", "Ness", "Lucas"])
+    assert result == ["Lucas", "Mario", "Ness", "Link", "Lucario"]
+
+    # Number of upvotes of each page in the corresponding order
+    mock_backend.tracker.get_upvotes.side_effect = [5, 8, 10, 2, 7]
+    result = mock_backend.rank_pages(
+        ["Lucario", "Mario", "Link", "Ness", "Lucas"])
+    assert result == ["Link", "Mario", "Lucas", "Lucario", "Ness"]
+
+
+def test_rank_pages_upvote_ties(mock_backend):
+    # Number of upvotes of each page in the corresponding order
+    mock_backend.tracker.get_upvotes.side_effect = [2, 8, 8, 7, 10]
+    result = mock_backend.rank_pages(
+        ["Lucario", "Mario", "Link", "Ness", "Lucas"])
+    assert result == ["Lucas", "Mario", "Link", "Ness", "Lucario"]
+
+    # Number of upvotes of each page in the corresponding order
+    mock_backend.tracker.get_upvotes.side_effect = [5, 8, 10, 2, 2]
+    result = mock_backend.rank_pages(
+        ["Lucario", "Mario", "Link", "Ness", "Lucas"])
+    assert result == ["Link", "Mario", "Lucario", "Ness", "Lucas"]
+
+
+def test_rank_pages_empty_input(mock_backend):
+    # Number of upvotes of each page in the corresponding order
+    mock_backend.tracker.get_upvotes.side_effect = [2, 8, 5, 7, 10]
+    result = mock_backend.rank_pages([])
+    assert result == []
+
+
+def test_get_worlds(mock_backend):
+    # Create sample world entities
+    world_entities = [
+        {
+            "world_name": "Super Mario Bros."
+        },
+        {
+            "world_name": "The Legend of Zelda"
+        },
+        {
+            "world_name": "Sonic the Hedgehog"
+        },
+    ]
+
+    # Set up the mock backend to return the world entities
+    mock_backend.client.query.return_value.fetch.return_value = world_entities
+
+    # Test the get_worlds function
+    result = mock_backend.get_worlds()
+    expected_result = [
+        "Super Mario Bros.",
+        "The Legend of Zelda",
+        "Sonic the Hedgehog",
+    ]
+    assert result == expected_result
+
+
+def test_get_worlds_no_worlds(mock_backend):
+    # Set up the mock backend to return an empty list
+    mock_backend.client.query.return_value.fetch.return_value = []
+
+    # Test the get_worlds function when no worlds exist
+    result = mock_backend.get_worlds()
+    assert result == []
+
+
 # duda
 def test_get_image(mock_backend):
     # Prepare the test image data
@@ -122,3 +266,44 @@ def test_get_image(mock_backend):
 
     # Assert the expected image data is returned
     assert result == encoded_image_data
+
+
+def test_get_characters_by_world(mock_backend):
+    # Create sample world entities
+    world_entities = [
+        {
+            "world_name": "Super Mario Bros.",
+            "characters": ["Mario"]
+        },
+        {
+            "world_name": "The Legend of Zelda",
+            "characters": ["Link"]
+        },
+        {
+            "world_name": "Sonic the Hedgehog",
+            "characters": ["Sonic", "Luna"]
+        },
+    ]
+
+    # Test the get_characters_by_world function
+    mock_backend.client.query.return_value.fetch.return_value = [
+        world_entities[0]
+    ]
+    result = mock_backend.get_characters_by_world("Super Mario Bros.")
+    assert result == ["Mario"]
+
+    mock_backend.client.query.return_value.fetch.return_value = [
+        world_entities[1]
+    ]
+    result = mock_backend.get_characters_by_world("The Legend of Zelda")
+    assert result == ["Link"]
+
+    mock_backend.client.query.return_value.fetch.return_value = [
+        world_entities[2]
+    ]
+    result = mock_backend.get_characters_by_world("Sonic the Hedgehog")
+    assert result == ["Sonic", "Luna"]
+
+    mock_backend.client.query.return_value.fetch.return_value = []
+    result = mock_backend.get_characters_by_world("Nonexistent World")
+    assert result == []

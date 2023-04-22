@@ -1,5 +1,4 @@
 from flaskr import create_app
-
 import pytest
 
 
@@ -27,6 +26,12 @@ def test_home_page(client):
     assert resp_home.status_code == 200
     assert b"Welcome" in resp.data
     assert b"Welcome" in resp_home.data
+
+
+def test_search_results(client):
+    resp = client.post("/search")
+    assert resp.status_code == 200
+    assert b"search_query" in resp.data
 
 
 def test_search(client):

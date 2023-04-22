@@ -62,15 +62,6 @@ def make_endpoints(app, backend):
                                active=user.active,
                                name=user.get_id())
 
-    @app.route('/search', methods=["POST"])
-    def search():
-        """Handles search queries submitted from the home page."""
-        search_query = request.form.get('search_query')
-        return render_template("main.html",
-                               search_query=search_query,
-                               active=user.active,
-                               name=user.get_id())
-
     @app.route("/about")
     def about():
         """Renders authors' images and information."""
@@ -84,23 +75,30 @@ def make_endpoints(app, backend):
     @app.route("/pages")
     def pages():
         """Renders the page index for wiki pages."""
-        name_list = backend.get_all_page_names()
+        selected_world = request.args.get("world", "All")
+        name_list = backend.get_characters_by_world(selected_world)
+        worlds = backend.get_worlds()
         return render_template("pages.html",
                                name_list=name_list,
+                               worlds=worlds,
+                               selected_world=selected_world,
                                active=user.active,
                                name=user.get_id())
 
-    @app.route("/pages/<page_name>", methods=["GET", "POST"])
+    @app.route("/pages/<page_name>/upvote", methods=["GET", "POST"])
+    def upvoting_page(page_name):
+        if user.active:
+            backend.tracker.upvote_page(page_name, user.get_id())
+        else:
+            flash("You need to be logged in to upvote a page.")
+        return redirect(url_for("show_character_info", page_name=page_name))
+
+    @app.route("/pages/<page_name>")
     def show_character_info(page_name):
         """Renders specific (clicked) wiki page based on page_name."""
         page_content = backend.get_wiki_page(page_name)
         character_name, description, world, = page_content.split('|', 3)
         page_image = backend.get_image("character-images/", page_name)
-        if request.method == "POST":
-            if user.active:
-                backend.tracker.upvote_page(character_name, user.get_id())
-            else:
-                flash("You need to be logged in to upvote a page.")
         return render_template("page.html",
                                character_name=character_name,
                                description=description,
@@ -184,6 +182,31 @@ def make_endpoints(app, backend):
                 flash('Incorrect File Type')
             if checker:
                 backend.upload(user.get_id(), file, name, info, world)
+        worlds = backend.get_worlds()
         return render_template("upload.html",
+                               worlds=worlds,
                                active=user.active,
                                name=user.get_id())
+
+    @app.route("/search", methods=["GET", "POST"])
+    def search_results():
+        """Renders the search results when a user inputs a query."""
+        if request.method == 'POST':
+            query = request.form.get('search_query')
+            if query == "":
+                flash("Please enter text in the Search Bar")
+            else:
+                matching_names = backend.get_query_pages(query)
+                matching_names = backend.rank_pages(matching_names)
+            return render_template("results.html",
+                                   query=query,
+                                   active=user.active,
+                                   name=user.get_id(),
+                                   matching_names=matching_names)
+        else:
+            return render_template(
+                "results.html",
+                query="",  # Placeholder value
+                active=user.active,
+                name=user.get_id(),
+                matching_names=[None])  # Placeholder value

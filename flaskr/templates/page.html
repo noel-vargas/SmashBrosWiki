@@ -9,7 +9,7 @@
             {{ message }}
         </div>
     {% endfor %}
-    <form method="POST">    
+    <form action= "/pages/{{character_name}}/upvote" method="POST">
         <input type=submit value=Upvote>
     </form>
     <h3>World: {{ world }}</h3>  <!-- Add world information to the page -->
