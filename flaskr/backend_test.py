@@ -105,7 +105,7 @@ def test_sign_in(mock_backend):
     assert result == -1
 
 
-def test_get_query_pages(mock_backend):
+def test_get_query_pages_name_search(mock_backend):
     mock_backend.get_all_page_names = MagicMock(return_value=["Mario", "Link"])
     mock_backend.get_wiki_page = MagicMock()
     mock_backend.get_wiki_page.side_effect = [
@@ -123,7 +123,60 @@ def test_get_query_pages(mock_backend):
     assert result == ["Mario"]
 
 
-# duda
+def test_get_query_pages_content_search(mock_backend):
+    mock_backend.get_all_page_names = MagicMock(return_value=["Mario", "Link"])
+    mock_backend.get_wiki_page = MagicMock()
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("boomerang")
+    assert result == ["Link"]
+
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("Plumber")
+    assert result == ["Mario"]
+
+
+def test_get_query_pages_world_search(mock_backend):
+    mock_backend.get_all_page_names = MagicMock(return_value=["Mario", "Link"])
+    mock_backend.get_wiki_page = MagicMock()
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("La Leyenda de Zelda")
+    assert result == ["Link"]
+
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("Super Mario Bros.")
+    assert result == ["Mario"]
+
+
+def test_get_query_pages_empty_search(mock_backend):
+    mock_backend.get_all_page_names = MagicMock(return_value=["Mario", "Link"])
+    mock_backend.get_wiki_page = MagicMock()
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages("")
+    assert result == ["Mario", "Link"]
+
+    mock_backend.get_wiki_page.side_effect = [
+        'Mario|Plumber from the Mushroom Kingdom|Super Mario Bros.',
+        'Link|I have a boomerang|La Leyenda de Zelda'
+    ]
+    result = mock_backend.get_query_pages(None)
+    assert result == ["Mario", "Link"]
+
+
 def test_get_image(mock_backend):
     # Prepare the test image data
     image_data = b'test_image_data'

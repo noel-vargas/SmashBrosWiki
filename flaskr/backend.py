@@ -213,6 +213,9 @@ class Backend:
         Returns:
             A list of strings representing the pages that match with the query.
         """
+        if not query or query == "":
+            return self.get_all_page_names()
+
         name_list = self.get_all_page_names()
         matching_names = list()
         for page_name in name_list:
