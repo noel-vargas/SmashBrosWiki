@@ -24,7 +24,7 @@
             <p><strong>{{ username }}:</strong> {{ comment_text }}</p>
         {% endfor %}
     {% endfor %}
-    <form action="/pages/{{ character_name }}" method="POST">
+    <form action="/pages/{{character_name}}/comment" method="POST">
         <input type="text" name="comment" placeholder="Comment here...">
         <input type="submit" value="Comment">
     </form>
