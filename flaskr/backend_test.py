@@ -56,15 +56,15 @@ def test_get_all_page_names(mock_backend):
 
 
 def test_get_all_usernames(mock_backend):
-    entity1 = MagicMock()
-    entity1.key.name = "sebagabs"
-    entity2 = MagicMock()
-    entity2.key.name = "Noel"
-    entity3 = MagicMock()
-    entity3.key.name = "Bryan"
+    mock_user_1 = MagicMock()
+    mock_user_1.key.name = "sebagabs"
+    mock_user_2 = MagicMock()
+    mock_user_2.key.name = "Noel"
+    mock_user_3 = MagicMock()
+    mock_user_3.key.name = "Bryan"
 
     mock_backend.client.query.return_value.fetch.return_value = [
-        entity1, entity2, entity3
+        mock_user_1, mock_user_2, mock_user_3
     ]
 
     result = mock_backend.get_all_page_names()
