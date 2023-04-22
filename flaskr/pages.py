@@ -93,7 +93,6 @@ def make_endpoints(app, backend):
                                active=user.active,
                                name=user.get_id())
 
-
     @app.route("/pages/<page_name>/upvote", methods=["GET", "POST"])
     def upvoting_page(page_name):
         if user.active:
@@ -101,8 +100,6 @@ def make_endpoints(app, backend):
         else:
             flash("You need to be logged in to upvote a page.")
         return redirect(url_for("show_character_info", page_name=page_name))
-
-
 
     @app.route("/pages/<page_name>")
     def show_character_info(page_name):
