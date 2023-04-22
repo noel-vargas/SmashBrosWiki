@@ -1,6 +1,8 @@
 from google.cloud import datastore, storage
+from typing import List
 import os, base64, csv
 import hashlib
+import json
 """ Provides a backend implementation for the Super Smash Bros. wiki project using Google Cloud Storage (GCS) and Google Cloud Datastore """
 
 
@@ -89,18 +91,16 @@ class Backend:
         results = list(query.fetch())
         return [entity.key.name for entity in results]
 
-    # I changed this method's parameters!! added path and name
-
     def upload(self, uploader, f, char_name, char_info, char_world):
         """Uploads an image and character info to the GCS bucket and Datastore.
 
-            Args:
-            f: A file object representing the image to be uploaded.
-            char_name: A string representing the name of the character.
-            char_info: A string representing the info of the character.
-            char_world: A string representing the world of the character.
+        Args:
+        uploader: the username of the person uploading the character
+        f: A file object representing the image to be uploaded.
+        char_name: A string representing the name of the character.
+        char_info: A string representing the info of the character.
+        char_world: A string representing the world of the character.
         """
-        # Save the image to the GCS bucket
         image_blob = self.content_bucket.blob("character-images/" + char_name +
                                               ".png")
         image_blob.upload_from_file(f, content_type=f.content_type)
@@ -114,6 +114,19 @@ class Backend:
             'World': char_world,
         })
         self.client.put(wiki_page)
+
+        # Update the 'World' entity in the Datastore
+        world_key = self.client.key('World', char_world)
+        world_entity = self.client.get(world_key)
+        if world_entity:
+            world_entity['characters'].append(char_name)
+        else:
+            world_entity = datastore.Entity(key=world_key)
+            world_entity.update({
+                'world_name': char_world,
+                'characters': [char_name],
+            })
+        self.client.put(world_entity)
         self.tracker.add_upload(username=uploader, pagename=char_name)
 
     def sign_up(self, new_user_name: str, new_password: str) -> bool:
@@ -205,7 +218,10 @@ class Backend:
 
     def get_query_pages(self, query: str) -> list[str]:
         """
-        Get pages that matches a given string query.
+        Get pages that matches a given string query. 
+        
+        Query Injection attacks are prevented. The information is
+        retrieved from the database and then it is compared with the query.
 
         Args:
             query: an input string typed by the user
@@ -226,3 +242,47 @@ class Backend:
             ) or lowcase_q in description.lower() or lowcase_q in world.lower():
                 matching_names.append(page_name)
         return matching_names
+
+    def rank_pages(self, matching_names: List[str]) -> List[str]:
+        """Ranks pages based on number of upvotes.
+
+        Args:
+            matching_names: A list of page names to be ranked.
+
+        Returns:
+            A list of page names sorted in descending order of upvotes.
+        """
+        ordered_names = []
+        for page_name in matching_names:
+            ordered_names.append(
+                (page_name, self.tracker.get_upvotes(page_name)))
+        ordered_names.sort(key=lambda i: i[1], reverse=True)
+
+        return [ranked_pages[0] for ranked_pages in ordered_names]
+
+    def get_characters_by_world(self, world: str) -> List[str]:
+        """Fetches a list of characters in a given world.
+
+        Args:
+            world: A string representing the name of a world.
+
+        Returns:
+            A list of characters in the specified world.
+        """
+        query = self.client.query(kind='World')
+        query.add_filter('world_name', '=', world)
+        results = list(query.fetch())
+        if results:
+            return results[0]['characters']
+        return []
+
+    def get_worlds(self) -> List[str]:
+        """Fetches a list of all available worlds.
+
+        Returns:
+            A list of strings representing the names of all available worlds.
+        """
+        query = self.client.query(kind='World')
+        results = list(query.fetch())
+        worlds = [result['world_name'] for result in results]
+        return worlds

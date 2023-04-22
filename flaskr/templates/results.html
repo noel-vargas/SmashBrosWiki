@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block head %} <title>Search Results</title> {% endblock %}
+
+{% block body %}
+
+    {# This page will serve to output the results that match the query a user inputs into
+    the search bar. These resuls will clickable links that link to the character pages
+    which name, content or world matches the text in the user search query. #}
+
+    <!-- Search Bar -->
+    <form method="POST">
+        <input type="text" name="search_query" placeholder="Search..." maxlength="128">
+        <input type="submit" value="Search">
+    </form>
+
+    {% if matching_names|length %}
+        {% if matching_names[0] is not none %}
+            <h3>Results that match for "{{ query }}":</h3>
+        {% endif %}
+        <ul>
+            {% for page_name in matching_names %}
+                {% if page_name %}
+                    <li><a href="/pages/{{ page_name }}">{{ page_name }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h3>No matches found for for "{{ query }}".</h3>
+    {% endif %}
+
+
+{% endblock %}
