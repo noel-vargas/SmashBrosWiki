@@ -1,6 +1,6 @@
 import pytest, hashlib, base64
 from werkzeug.security import generate_password_hash
-from unittest.mock import MagicMock, Mock
+from unittest.mock import MagicMock, Mock, call
 from .backend import Backend
 import json
 
@@ -247,6 +247,56 @@ def test_get_worlds_no_worlds(mock_backend):
     # Test the get_worlds function when no worlds exist
     result = mock_backend.get_worlds()
     assert result == []
+
+
+def test_get_user_comments(mock_backend):
+    # Prepare the mock data for tracker.get_comments method
+    mock_comments = {
+        '0': {
+            'Noel1827': 'testing testing'
+        },
+        '1': {
+            '2': 'tsting again brrrr'
+        },
+        '2': {
+            '2': 'tsting again brrrr'
+        },
+        '3': {
+            '2': 'one more time'
+        },
+        '4': {
+            '2': 'one more time'
+        }
+    }
+    mock_tracker = MagicMock(get_comments=MagicMock(return_value=mock_comments))
+    mock_backend.tracker = mock_tracker
+
+    # Test the get_user_comments function
+    username = '2'
+    uploaded_pages = ['Donkey Kong']
+    result = mock_backend.get_user_comments(username, uploaded_pages)
+
+    # Assert that the expected comments were returned
+    expected_result = {
+        'Donkey Kong': {
+            '1': {
+                '2': 'tsting again brrrr'
+            },
+            '2': {
+                '2': 'tsting again brrrr'
+            },
+            '3': {
+                '2': 'one more time'
+            },
+            '4': {
+                '2': 'one more time'
+            }
+        }
+    }
+    assert expected_result == result
+
+    # Check that get_comments was called with the expected arguments
+    assert mock_tracker.get_comments.call_args_list == [call('Donkey Kong')]
 
 
 # duda

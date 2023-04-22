@@ -201,6 +201,25 @@ class Backend:
         return '.' in filename and \
             filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+    def get_uploaded_pages(self, username):
+        """Returns a list of pages uploaded by the given user."""
+        return self.tracker.get_pages_uploaded(username)
+
+    def get_user_comments(self, username, uploaded_pages):
+        """Returns a dictionary of comments made by the given user."""
+        comments = {}
+        for pagename in uploaded_pages:
+            page_comments = self.tracker.get_comments(pagename)
+            if page_comments:
+                for comment_id, comment_data in page_comments.items():
+                    if username in comment_data:
+                        if pagename not in comments:
+                            comments[pagename] = {}
+                        comments[pagename][comment_id] = {
+                            username: comment_data[username]
+                        }
+        return comments
+
     #Extra
     def get_authors(self):
         """Get the encoded image data of authors from the GCS bucket.

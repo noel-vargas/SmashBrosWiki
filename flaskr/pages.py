@@ -99,9 +99,16 @@ def make_endpoints(app, backend):
         page_content = backend.get_wiki_page(page_name)
         character_name, description, world, = page_content.split('|', 3)
         page_image = backend.get_image("character-images/", page_name)
+        comments = backend.tracker.get_comments(character_name)
+        comments = comments if comments else {}
+        upvotes = backend.tracker.get_upvotes(character_name)
+        uploader = backend.tracker.get_page_uploader(character_name)
         return render_template("page.html",
                                character_name=character_name,
                                description=description,
+                               comments=comments,
+                               upvotes=upvotes,
+                               uploader=uploader,
                                page_image=page_image,
                                world=world,
                                active=user.active,
@@ -210,3 +217,20 @@ def make_endpoints(app, backend):
                 active=user.active,
                 name=user.get_id(),
                 matching_names=[None])  # Placeholder value
+
+    @app.route('/users')
+    def users():
+        # Retrieve the list of users here
+        users_list = backend.get_all_usernames()
+        return render_template('users.html', users=users_list)
+
+    @app.route('/users/<username>')
+    def user_contributions(username):
+        uploaded_pages = backend.get_uploaded_pages(username)
+        comments = backend.get_user_comments(username, uploaded_pages)
+        total_upvotes = backend.tracker.get_upvotes(username)
+        return render_template('contributions.html',
+                               username=username,
+                               uploaded_pages=uploaded_pages,
+                               comments=comments,
+                               total_upvotes=total_upvotes)
