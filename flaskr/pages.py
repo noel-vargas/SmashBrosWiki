@@ -93,18 +93,6 @@ def make_endpoints(app, backend):
             flash("You need to be logged in to upvote a page.")
         return redirect(url_for("show_character_info", page_name=page_name))
 
-    @app.route("/pages/<page_name>/comment", methods=["GET", "POST"])
-    def commenting_page(page_name):
-        if user.active:
-            backend.tracker.add_comment(page_name, user.get_id(),
-                                        request.form["comment"])
-            backend.tracker.add_comment(page_name, user.get_id(),
-                                        request.form["comment"])
-            flash("Comment posted successfully!")
-        else:
-            flash("You need to be logged in to leave a comment.")
-        return redirect(url_for("show_character_info", page_name=page_name))
-
     @app.route("/pages/<page_name>")
     def show_character_info(page_name):
         """Renders specific (clicked) wiki page based on page_name."""
