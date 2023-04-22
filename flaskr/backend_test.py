@@ -124,18 +124,40 @@ def test_get_query_pages(mock_backend):
 
 
 def test_rank_pages(mock_backend):
+    # Number of upvotes of each page in the corresponding order
     mock_backend.tracker.get_upvotes.side_effect = [2, 8, 5, 7, 10]
     result = mock_backend.rank_pages(
         ["Lucario", "Mario", "Link", "Ness", "Lucas"])
     assert result == ["Lucas", "Mario", "Ness", "Link", "Lucario"]
 
+    # Number of upvotes of each page in the corresponding order
     mock_backend.tracker.get_upvotes.side_effect = [5, 8, 10, 2, 7]
     result = mock_backend.rank_pages(
         ["Lucario", "Mario", "Link", "Ness", "Lucas"])
     assert result == ["Link", "Mario", "Lucas", "Lucario", "Ness"]
 
 
-# duda
+def test_rank_pages_upvote_ties(mock_backend):
+    # Number of upvotes of each page in the corresponding order
+    mock_backend.tracker.get_upvotes.side_effect = [2, 8, 8, 7, 10]
+    result = mock_backend.rank_pages(
+        ["Lucario", "Mario", "Link", "Ness", "Lucas"])
+    assert result == ["Lucas", "Mario", "Link", "Ness", "Lucario"]
+
+    # Number of upvotes of each page in the corresponding order
+    mock_backend.tracker.get_upvotes.side_effect = [5, 8, 10, 2, 2]
+    result = mock_backend.rank_pages(
+        ["Lucario", "Mario", "Link", "Ness", "Lucas"])
+    assert result == ["Link", "Mario", "Lucario", "Ness", "Lucas"]
+
+
+def test_rank_pages_empty_input(mock_backend):
+    # Number of upvotes of each page in the corresponding order
+    mock_backend.tracker.get_upvotes.side_effect = [2, 8, 5, 7, 10]
+    result = mock_backend.rank_pages([])
+    assert result == []
+
+
 def test_get_image(mock_backend):
     # Prepare the test image data
     image_data = b'test_image_data'

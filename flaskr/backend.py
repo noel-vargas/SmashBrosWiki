@@ -228,6 +228,17 @@ class Backend:
         return matching_names
 
     def rank_pages(self, matching_names: list[str]) -> list[str]:
+        """
+        Orders the list of names of the pages by the most to least upvoted. 
+
+        Args:
+            list: an input list with page names
+
+        Returns:
+            an ordered list of the page names
+        """
+        if not matching_names:
+            return matching_names
 
         ordered_names = list()
         for page_name in matching_names:
