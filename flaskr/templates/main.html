@@ -2,12 +2,4 @@
 
 {% block head %} <title>NewBieS Page</title> {% endblock %}
 
-{% block body %}
-{% for message in get_flashed_messages() %}
-            <div class="alert alert-warning" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-
- <div> Welcome to Smash Bros </div>
- {% endblock %}
+{% block body %} <div> Welcome to Smash Bros </div>{% endblock %}

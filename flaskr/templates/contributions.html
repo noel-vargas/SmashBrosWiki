@@ -12,8 +12,13 @@
     </ul>
     <h3>Comments</h3>
     {% if comments %}
-        {% for page, comment in comments.items() %}
-            <p>{{ page }}: {{ comment }}</p>
+        {% for page, comment_data in comments.items() %}
+            <h2>{{ page }}:</h2>
+            {% for comment_id, comment in comment_data.items() %}
+                {% for user, comment_text in comment.items() %}
+                    <p><strong>{{ user }}:</strong> {{ comment_text }}</p>
+                {% endfor %}
+            {% endfor %}
         {% endfor %}
     {% else %}
         <p>No comments found.</p>
