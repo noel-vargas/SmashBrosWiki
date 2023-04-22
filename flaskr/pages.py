@@ -84,7 +84,7 @@ def make_endpoints(app, backend):
                                selected_world=selected_world,
                                active=user.active,
                                name=user.get_id())
-    
+
     @app.route("/pages/<page_name>/comment", methods=["GET", "POST"])
     def commenting_page(page_name):
         if user.active:
